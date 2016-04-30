@@ -57,7 +57,7 @@ function listAllCharacters() {
 		port: 80,
 		method: 'GET'
 	};
-	request(options, function(res) {
+	http.request(options, function(res) {
 		console.log('STATUS: ' + res.statusCode);
 		console.log('HEADERS: ' + JSON.stringify(res.headers));
 		res.setEncoding('utf8');
