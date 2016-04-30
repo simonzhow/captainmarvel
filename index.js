@@ -52,11 +52,19 @@ var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWo
 
 function listAllCharacters() {
 	var url = base_url + characters_base;
-	request(url, function(error, response, body) {
-		if (!error && response.statusCode == 200) {
-			console.log(body)
-		}
-	})
+	var options = {
+		host: url,
+		port: 80,
+		method: 'GET'
+	};
+	request(options, function(res) {
+		console.log('STATUS: ' + res.statusCode);
+		console.log('HEADERS: ' + JSON.stringify(res.headers));
+		res.setEncoding('utf8');
+		res.on('data', function (chunk) {
+			console.log('BODY: ' + chunk);
+		});
+	}).end();
 }
 
 
