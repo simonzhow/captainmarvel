@@ -2,6 +2,9 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
 var app = express()
+var base_url = "http://gateway.marvel.com/"
+var characters_base = "v1/public/characters/"
+var comics_base = "/v1/public/comics"
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -36,6 +39,9 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
+            if (text.toLowerCase() == "list characters") {
+            	listAllCharacters()
+            }
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
     }
@@ -43,6 +49,16 @@ app.post('/webhook/', function (req, res) {
 })
 
 var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
+
+function listAllCharacters() {
+	var url = base_url + characters_base;
+	request(url, function(error, response, body) {
+		if (!error && response.statusCode == 200) {
+			console.log(body)
+		}
+	})
+}
+
 
 function sendTextMessage(sender, text) {
     messageData = {
