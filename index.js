@@ -48,10 +48,10 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
             if (text.toLowerCase().startsWith("character")) {
-            	searchForCharacter(text.substring(6).trim(), sender)
+            	searchForCharacter(text.substring(10).trim(), sender)
             }
             if (text.toLowerCase().startsWith("comic")) {
-                searchForComic(text.substring(6).trim(), sender)
+                searchForComic(text.substring(5).trim(), sender)
             }
 
         }
@@ -66,6 +66,10 @@ app.post('/webhook/', function (req, res) {
 function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids) {
     var elements = [] 
     var numCards = names.length
+    if (numCards == 0) {
+        sendTextMessage(sender, "No results found")
+        return;
+    }
 	for (i = 0; i < numCards; i++) {
 		var card = {
 			"title": names[i],
@@ -78,7 +82,7 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls
 			},
             {
                 "type": "postback",
-                "payload": ids[i], //searchForComic(ids, ""),
+                "payload": ids[i].toString(),
                 "title": "Related Comics"
             }]
 		}
