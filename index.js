@@ -60,35 +60,21 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrl,
 	var elements = []
 	var numCards = names.length
 	for (i = 0; i < numCards; i++) {
-		if (comicLinkUrls[i] == "") {
-			var card = {
-				"title": names[i],
-				"subtitle": descriptions[i],
-				"image_url": thumbnails[i],
-				"buttons": [{
-					"type": "web_url",
-					"url": detailsUrl[i],
-					"title": "More Information"
-				}]
-			}
-			elements.push(card)
-		} else {
-			var card = {
-				"title": names[i],
-				"subtitle": descriptions[i],
-				"image_url": thumbnails[i],
-				"buttons": [{
-					"type": "web_url",
-					"url": detailsUrl[i],
-					"title": "More Information"
-				}, {
-					"type": "web_url",
-					"url": comicLinkUrls[i],
-					"title": "View Comics"
-				}]
-			}
-			elements.push(card)
+		var card = {
+			"title": names[i],
+			"subtitle": descriptions[i],
+			"image_url": thumbnails[i],
+			"buttons": [{
+				"type": "web_url",
+				"url": detailsUrl[i],
+				"title": "More Information"
+			}, {
+				"type": "web_url",
+				"url": comicLinkUrls[i],
+				"title": "View Comics"
+			}]
 		}
+		elements.push(card)
 	}
   messageData = {
     "attachment": {
@@ -133,7 +119,7 @@ function searchForCharacter(search, sender) {
 			var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
 			var urls = item.urls
 			var detailsUrl = ""
-			var comicLinkUrl = ""
+			var comicLinkUrl = "http://marvel.com/comics/characters/1009368/iron_man?utm_campaign=apiRef&utm_source=9aaf771e2b960537d98d91ff2451b2d6"
 			for (j = 0; j < urls.length; j++) {
 				var object = urls[j]
 				if (object.type == "detail") {
