@@ -4,10 +4,9 @@ var request = require('request')
 var md5 = require('md5')
 var api = require('marvel-api')
 var app = express()
-
+var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
 var public_key = '9aaf771e2b960537d98d91ff2451b2d6'
 var private_key = 'aba10e9f584d245bd51f13a9ce8111d142f27d00'
-
 var marvel = api.createClient({
 	publicKey: public_key,
 	privateKey: private_key
@@ -49,46 +48,36 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
             if (text.toLowerCase().startsWith("search")) {
-            	//searchForCharacter(text.substring(6).trim(), sender)
+            	searchForCharacter(text.substring(6).trim(), sender)
             }
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-            sendGenericMessage(sender)
         }
     }
     res.sendStatus(200)
 })
 
-var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
-
-function sendGenericMessage(sender) {
+function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrl, comicLinkUrls) {
+	var elements = []
+	var numCards = names.length
+	for (i = 0; i < numCards; i++) {
+		var card = {
+			"title": names[i],
+			"subtitle": descriptions[i]
+			"image_url": thumbnails[i]
+			"buttons": [{
+				"type": "web_url",
+				"url": detailsUrl,
+				"title": "More Information"
+			}]
+		}
+		elements.push(card)
+	}
   messageData = {
     "attachment": {
       "type": "template",
       "payload": {
         "template_type": "generic",
-        "elements": [{
-          "title": "First card",
-          "subtitle": "Element #1 of an hscroll",
-          "image_url": "http://messengerdemo.parseapp.com/img/rift.png",
-          "buttons": [{
-            "type": "web_url",
-            "url": "https://www.messenger.com/",
-            "title": "Web url"
-          }, {
-            "type": "postback",
-            "title": "Postback",
-            "payload": "Payload for first element in a generic bubble",
-          }],
-        },{
-          "title": "Second card",
-          "subtitle": "Element #2 of an hscroll",
-          "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-          "buttons": [{
-            "type": "postback",
-            "title": "Postback",
-            "payload": "Payload for second element in a generic bubble",
-          }],
-        }]
+        "elements": elements
       }
     }
   };
@@ -111,9 +100,13 @@ function sendGenericMessage(sender) {
 
 function searchForCharacter(search, sender) {
 	marvel.characters.findNameStartsWith(search).then(function(res) {
-		console.log(res)
 		var data = res.data
 		var count = res.meta.count
+		var names = []
+		var descriptions = []
+		var thumbnails = []
+		var detailsUrls = []
+		var comicLinkUrls = []
 		count = Math.min(10, res.meta.count) //Can only show a max of 10 items
 		for(i = 0; i < count; i++) {
 			var item = data[i]
@@ -121,8 +114,8 @@ function searchForCharacter(search, sender) {
 			var description = item.description
 			var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
 			var urls = item.urls
-			var detailsUrl = null
-			var comicLinkUrl = null
+			var detailsUrl = ""
+			var comicLinkUrl = ""
 			for (j = 0; j < urls.length; j++) {
 				var object = urls[j]
 				if (object.type == "detail") {
@@ -131,64 +124,15 @@ function searchForCharacter(search, sender) {
 					comicLinkUrl = object.url
 				}
 			}
-			console.log(name)
-			console.log(description)
-			console.log(thumbnailUrl)
-			console.log(detailsUrl)
-			console.log(comicLinkUrl)
-			console.log(" ")
+			names.push(name)
+			descriptions.push(description)
+			thumbnails.push(thumbnailUrl)
+			detailsUrls.push(detailsUrl)
+			comicLinkUrls.push(comicLinkUrls)
 		}
+		sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrl, comicLinkUrls)
 	})
-    messageData = {
-    "attachment": {
-      "type": "template",
-      "payload": {
-        "template_type": "generic",
-        "elements": [{
-          "title": name,
-          "subtitle": description,
-          "image_url": thumbnailUrl, 
-          "buttons": [{
-            "type": "web_url",
-            "url": detailsUrl,
-            "title": "More details"
-          }, {
-            "type": "web_url",
-            "url": comicLinkUrl,
-            "title": "Comics"
-          }, {
-            "type": "postback",
-            "title": "Postback",
-            "payload": "Payload for first element in a generic bubble",
-          }],
-        },{
-          "title": "Spinecond card",
-          "subtitle": "Element #2 of an hscroll",
-          "image_url": "http://messengerdemo.parseapp.com/img/gearvr.png",
-          "buttons": [{
-            "type": "postback",
-            "title": "Postback",
-            "payload": "Payload for second element in a generic bubble",
-          }],
-        }]
-      }
-    }
-  };
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
-    method: 'POST',
-    json: {
-      recipient: {id:sender},
-      message: messageData,
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
-  });
+    
 }
 
 
