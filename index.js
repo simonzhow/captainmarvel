@@ -50,7 +50,6 @@ app.post('/webhook/', function (req, res) {
             if (text.toLowerCase().startsWith("search")) {
             	searchForCharacter(text.substring(6).trim(), sender)
             }
-            sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
     }
     res.sendStatus(200)
