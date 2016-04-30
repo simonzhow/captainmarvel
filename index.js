@@ -113,8 +113,8 @@ function searchForCharacter(search, sender) {
 			var description = item.description
 			var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
 			var urls = item.urls
-			var detailsUrl = ""
-			var comicLinkUrl = ""
+			var detailsUrl = null
+			var comicLinkUrl = null
 			for (j = 0; j < urls.length; j++) {
 				var object = urls[j]
 				if (object.type == "detail") {
