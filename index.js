@@ -517,7 +517,7 @@ function hungry(sender)
 
     postmates.quote(delivery, function(err, res) {
     console.log(res.body.fee);  
-    sendTextMessage(sender, "Delivery fee for a Postmates order to you comes out to be: " + (Number(res.body.fee)/100);
+    sendTextMessage(sender, "Delivery fee for a Postmates order to you comes out to be: " + (Number(res.body.fee)/100));
     });
 }
 
