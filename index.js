@@ -3,8 +3,8 @@ var bodyParser = require('body-parser')
 var request = require('request')
 var http = require('http')
 var app = express()
-var base_url = "http://gateway.marvel.com/"
-var characters_base = "v1/public/characters/"
+var base_url = "http://gateway.marvel.com"
+var characters_base = "/v1/public/characters"
 var comics_base = "/v1/public/comics"
 
 app.set('port', (process.env.PORT || 5000))
