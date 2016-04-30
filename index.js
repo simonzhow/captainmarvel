@@ -517,7 +517,7 @@ function sendPostmatesMessage(sender) {
         "template_type": "generic",
         "elements": [{
           "title": "Postmates Order",
-          "image_url": "http://www.siliconhillsnews.com/wp-content/uploads/2014/06/Logo-Postmates.png",
+          "image_url": "https://lh5.ggpht.com/cQrz8n4yOQmlSfkJJINC_b4gFpZYnBQorGGBuDB7zzDh_bWUgXqSt7xNx3_ZsvLMjHKa=w300",
           "buttons": [{
             "type": "web_url",
             "url": "https://postmates.com/la/fat-sals-westwood-los-angeles/view/6448c8fa-cd14-4709-a983-2e88aff08a12",
