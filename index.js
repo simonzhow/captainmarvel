@@ -62,7 +62,7 @@ app.post('/webhook/', function (req, res) {
 var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
 
 function listAllCharacters() {
-	var url = base_url + characters_base + api_key + "&ts=" + ts + "&hash=" + md5(ts+public_key+private_key);
+	var url = base_url + characters_base + "&ts=" + ts + api_key + "&hash=" + md5(ts+private_key+public_key);
 	console.log(url)
 	rest.get(url).on('complete', function(data) {
 		console.log(data)
