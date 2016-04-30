@@ -1,6 +1,7 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
+var http = require('http')
 var app = express()
 var base_url = "http://gateway.marvel.com/"
 var characters_base = "v1/public/characters/"
