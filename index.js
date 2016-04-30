@@ -60,21 +60,35 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrl,
 	var elements = []
 	var numCards = names.length
 	for (i = 0; i < numCards; i++) {
-		var card = {
-			"title": names[i],
-			"subtitle": descriptions[i],
-			"image_url": thumbnails[i],
-			"buttons": [{
-				"type": "web_url",
-				"url": detailsUrl[i],
-				"title": "More Information"
-			}, {
-				"type": "web_url",
-				"url": comicLinkUrls[i],
-				"title": "View Comics"
-			}]
+		if (comicLinkUrls[i] == "") {
+			var card = {
+				"title": names[i],
+				"subtitle": descriptions[i],
+				"image_url": thumbnails[i],
+				"buttons": [{
+					"type": "web_url",
+					"url": detailsUrl[i],
+					"title": "More Information"
+				}]
+			}
+			elements.push(card)
+		} else {
+			var card = {
+				"title": names[i],
+				"subtitle": descriptions[i],
+				"image_url": thumbnails[i],
+				"buttons": [{
+					"type": "web_url",
+					"url": detailsUrl[i],
+					"title": "More Information"
+				}, {
+					"type": "web_url",
+					"url": comicLinkUrls[i],
+					"title": "View Comics"
+				}]
+			}
+			elements.push(card)
 		}
-		elements.push(card)
 	}
   messageData = {
     "attachment": {
