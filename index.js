@@ -1,18 +1,17 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
-var rest = require('restler')
 var md5 = require('md5')
+var api = require('marvel-api')
 var app = express()
 
-var base_url = "http://gateway.marvel.com"
-var characters_base = "/v1/public/characters"
-var comics_base = "/v1/public/comics"
-var public_key = "9aaf771e2b960537d98d91ff2451b2d6"
-var private_key = "aba10e9f584d245bd51f13a9ce8111d142f27d00"
-var api_key = "apikey=" + public_key
+var public_key = '9aaf771e2b960537d98d91ff2451b2d6'
+var private_key = 'aba10e9f584d245bd51f13a9ce8111d142f27d00'
 
-var ts = 0;
+var marvel = api.createClient({
+	publicKey: public_key,
+	privateKey: private_key
+});
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -44,7 +43,6 @@ app.listen(app.get('port'), function() {
 
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
-    ts = ts + 1
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
@@ -62,10 +60,8 @@ app.post('/webhook/', function (req, res) {
 var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
 
 function searchForCharacter(search) {
-	var url = base_url + characters_base + "?" + "name=" + search + "&" + api_key + "&ts=" + ts + "&hash=" + md5(ts+private_key+public_key);
-	console.log(url)
-	rest.get(url).on('complete', function(data) {
-		console.log(data)
+	marvel.characters.findNameStartsWith(search).then(function(res) {
+		console.log(res)
 	})
 }
 
