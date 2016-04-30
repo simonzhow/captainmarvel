@@ -10,7 +10,7 @@ var characters_base = "/v1/public/characters"
 var comics_base = "/v1/public/comics"
 var public_key = "9aaf771e2b960537d98d91ff2451b2d6"
 var private_key = "aba10e9f584d245bd51f13a9ce8111d142f27d00"
-var api_key = "?apikey=" + public_key
+var api_key = "apikey=" + public_key
 
 var ts = 0;
 
@@ -50,8 +50,8 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-            if (text.toLowerCase() == "list characters") {
-            	listAllCharacters()
+            if (text.toLowerCase().startsWith() == "search") {
+            	searchForCharacter(text.substring(6).trim())
             }
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
         }
@@ -61,8 +61,8 @@ app.post('/webhook/', function (req, res) {
 
 var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
 
-function listAllCharacters() {
-	var url = base_url + characters_base + api_key + "&ts=" + ts + "&hash=" + md5(ts+private_key+public_key);
+function searchForCharacter(search) {
+	var url = base_url + characters_base + "?" + "name=" + search + "&" + api_key + "&ts=" + ts + "&hash=" + md5(ts+private_key+public_key);
 	console.log(url)
 	rest.get(url).on('complete', function(data) {
 		console.log(data)
