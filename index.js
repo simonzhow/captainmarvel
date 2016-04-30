@@ -97,6 +97,9 @@ function handleWitData(error, data) {
         case "search_generic":
             var funcToRun = searchForGeneric
             break;
+        case "search_comics_for_character":
+            var funcToRun = getComicsForCharacter
+            break;
         case "help":
             var helpText = "Type in a question about the Marvel Universe to get started!\nFor example, you can try asking \"Who is Iron Man?\""
             sendTextMessage(globalSender, helpText)
@@ -156,10 +159,10 @@ function getCharacterId(query) {
     })
 }
 
-function getComicsForCharacter(query) {
+function getComicsForCharacter(query, sender) {
     var id = getCharacterId(query)
     if (id == "-1") {
-        sendTextMessage("No character found")
+        sendTextMessage(sender, "No character found")
         return
     }
     marvel.characters.comics(id).then(extractComicInfo)
@@ -253,23 +256,36 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
         return;
     }
     for (i = 0; i < numCards; i++) {
+        var buttons =  []
+        if(detailsUrls[i] != null) {
+            var detailsButton = {
+                "type": "web_url",
+                "url": detailsUrls[i],
+                "title": "More Information"
+            }
+            buttons.push(detailsButton)
+        }
+        if(purchaseUrls[i] != null) { 
+            var purchaseButton = {
+                "type": "web_url",
+                "url": purchaseUrls[i],
+                "title": "Buy Here"
+            }
+            buttons.push(purchaseButton)
+        }
+        if(readerUrls[i] != null) {
+            var urlButton = {
+                "type": "web_url",
+                "url": readerUrls[i],
+                "title": "Read Online Comic"
+            }
+            buttons.push(urlButton)
+        }
         var card = {
             "title": names[i],
             "subtitle": descriptions[i],
             "image_url": thumbnails[i],
-            "buttons": [{
-                "type": "web_url",
-                "url": detailsUrls[i],
-                "title": "More Information"
-            },{ 
-                "type": "web_url",
-                "url": purchaseUrls[i],
-                "title": "Buy Here"
-            }, {
-                "type": "web_url",
-                "url": readerUrls[i],
-                "title": "Read Online Comic"
-            }]
+            "buttons": buttons
         }
         elements.push(card)
     }
@@ -307,15 +323,15 @@ function searchForComic(search, sender, id) {
         marvel.characters.comics(id).then(extractComicInfo) 
 
     }
-    else if(id == 0){
+    else if(search != ""){
+        console.log("entered if statement correctly from searching comic directly")
         marvel.comics.findNameStartsWith(search).then(extractComicInfo)
-        // marvel.comics.
     }
     console.log("exited searchForComic")
 }
 
 function searchComicsByEvent(id, sender) {
-    marvel.event.characters(id).then(extractComicInfo)
+    marvel.event.comics(id).then(extractComicInfo)
 }
 
 function searchForEvent(search, sender) {
