@@ -6,6 +6,7 @@ var app = express()
 var base_url = "http://gateway.marvel.com"
 var characters_base = "/v1/public/characters"
 var comics_base = "/v1/public/comics"
+var api_key = "?apikey=9aaf771e2b960537d98d91ff2451b2d6"
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -14,6 +15,8 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 // Process application/json
 app.use(bodyParser.json())
+
+app.use(express.static('frontend'))
 
 // Index route
 app.get('/', function (req, res) {
@@ -52,7 +55,7 @@ app.post('/webhook/', function (req, res) {
 var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
 
 function listAllCharacters() {
-	var url = base_url + characters_base;
+	var url = base_url + characters_base + api_key;
 	var options = {
 		host: url,
 		port: 80,
