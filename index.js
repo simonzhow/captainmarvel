@@ -71,7 +71,7 @@ function handleWitData(error, data) {
     var entities = data.outcomes[0].entities;
     var skipEntities = false;
     if (_.has(entities, 'intent') && entities.intent[0].value === "hungry") {
-        hungry();
+        hungry(globalSender);
         return;
     }
     if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
@@ -526,28 +526,29 @@ function hungry(sender)
 
     postmates.quote(delivery, function(err, res) {
     console.log(res.body.fee);  
-    sendTextMessage(sender, res.body.fee);
+    sendTextMessage(sender, 'Delivery fee for a Postmates order to you comes out to be: ' + res.body.fee);
 });
+}
 
 
-    var delivery = {
-        manifest: "a sandwhich",
-        pickup_name: "The Warehouse",
-        pickup_address: "20 McAllister St, San Francisco, CA",
-        pickup_phone_number: "555-555-5555",
-        pickup_business_name: "Optional Pickup Business Name, Inc.",
-        pickup_notes: "Optional note that this is Invoice #123",
-        dropoff_name: "Alice",
-        dropoff_address: "101 Market St, San Francisco, CA",
-        dropoff_phone_number: "415-555-1234",
-        dropoff_business_name: "Optional Dropoff Business Name, Inc.",
-        dropoff_notes: "Optional note to ring the bell",
-        quote_id: "qUdje83jhdk"
-    };
+//     // var delivery = {
+//     //     manifest: "a sandwhich",
+//     //     pickup_name: "The Warehouse",
+//     //     pickup_address: "20 McAllister St, San Francisco, CA",
+//     //     pickup_phone_number: "555-555-5555",
+//     //     pickup_business_name: "Optional Pickup Business Name, Inc.",
+//     //     pickup_notes: "Optional note that this is Invoice #123",
+//     //     dropoff_name: "Alice",
+//     //     dropoff_address: "101 Market St, San Francisco, CA",
+//     //     dropoff_phone_number: "415-555-1234",
+//     //     dropoff_business_name: "Optional Dropoff Business Name, Inc.",
+//     //     dropoff_notes: "Optional note to ring the bell",
+//     //     quote_id: "qUdje83jhdk"
+//     // };
  
-    postmates.new(delivery, function(err, res) {
-        // `res.body` 
-});
+//     // postmates.new(delivery, function(err, res) {
+//     //     // `res.body` 
+// });
 
 
 
