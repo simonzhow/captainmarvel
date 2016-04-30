@@ -63,6 +63,7 @@ var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWo
 
 function listAllCharacters() {
 	var url = base_url + characters_base + api_key + "&ts=" + ts + "&hash=" + md5(ts+public_key+private_key);
+	console.log(url)
 	rest.get(url).on('complete', function(data) {
 		console.log(data)
 	})
