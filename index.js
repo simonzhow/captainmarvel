@@ -14,6 +14,8 @@ var marvel = api.createClient({
     publicKey: public_key,
     privateKey: private_key
 });
+var Postmates = require('postmates');
+var postmates = new Postmates('cus_KOQ26V1V9K3Zkk', 'ef65a92b-aec4-4147-94b2-8e106ca7c39f');
 
 const actions = {
 	say(sessionId, context, message, cb) {
