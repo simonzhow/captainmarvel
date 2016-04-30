@@ -66,8 +66,12 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrl,
 			"image_url": thumbnails[i],
 			"buttons": [{
 				"type": "web_url",
-				"url": detailsUrl,
+				"url": detailsUrl[i],
 				"title": "More Information"
+			}, {
+				"type": "web_url",
+				"url": comicLinkUrls[i],
+				"title": "View Comics"
 			}]
 		}
 		elements.push(card)
