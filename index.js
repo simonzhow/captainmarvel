@@ -62,6 +62,32 @@ var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWo
 function searchForCharacter(search) {
 	marvel.characters.findNameStartsWith(search).then(function(res) {
 		console.log(res)
+		var data = res.data
+		var count = res.meta.count
+		count = Math.min(10, res.meta.count) //Can only show a max of 10 items
+		for(i = 0; i < count; i++) {
+			var item = data[i]
+			var name = item.name
+			var description = item.description
+			var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
+			var urls = item.urls
+			var detailsUrl = null
+			var comicLinkUrl = null
+			for (j = 0; j < urls.length; j++) {
+				var object = urls[j]
+				if (object.type == "detail") {
+					detailsUrl = object.url
+				} else if (object.type == "comiclink") {
+					comicLinkUrl = object.url
+				}
+			}
+			console.log(name)
+			console.log(description)
+			console.log(thumbnailUrl)
+			console.log(detailsUrl)
+			console.log(comicLinkUrl)
+			console.log(" ")
+		}
 	})
 }
 
