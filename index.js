@@ -49,7 +49,7 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
             if (text.toLowerCase().startsWith("search")) {
-            	searchForCharacter(text.substring(6).trim())
+            	searchForCharacter(text.substring(6).trim(), sender)
             }
             sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
             sendGenericMessage(sender)
@@ -64,7 +64,7 @@ function sendGenericMessage(sender) {
   
 }
 
-function searchForCharacter(search) {
+function searchForCharacter(search, sender) {
 	marvel.characters.findNameStartsWith(search).then(function(res) {
 		console.log(res)
 		var data = res.data
@@ -100,13 +100,17 @@ function searchForCharacter(search) {
       "payload": {
         "template_type": "generic",
         "elements": [{
-          "title": "First card",
-          "subtitle": "Element #1 of an hscroll",
+          "title": name,
+          "subtitle": description,
           "image_url": thumbnailUrl, 
           "buttons": [{
             "type": "web_url",
-            "url": "https://www.messenger.com/",
-            "title": "Web url"
+            "url": detailsUrl,
+            "title": "More details"
+          }, {
+            "type": "web_url",
+            "url": comicLinkUrl,
+            "title": "Comics"
           }, {
             "type": "postback",
             "title": "Postback",
