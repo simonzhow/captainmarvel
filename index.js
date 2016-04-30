@@ -526,7 +526,7 @@ function sendPostmatesMessage(sender) {
             "type": "web_url",
             "url": "https://postmates.com/los-angeles",
             "title": "Order Something Else in Westwood"
-            "payload": "Payload for first element in a generic bubble"
+            
           }]
         }]
       }
