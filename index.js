@@ -62,8 +62,8 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrl,
 	for (i = 0; i < numCards; i++) {
 		var card = {
 			"title": names[i],
-			"subtitle": descriptions[i]
-			"image_url": thumbnails[i]
+			"subtitle": descriptions[i],
+			"image_url": thumbnails[i],
 			"buttons": [{
 				"type": "web_url",
 				"url": detailsUrl,
