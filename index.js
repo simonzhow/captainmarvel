@@ -1,12 +1,18 @@
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
-var http = require('http')
+var rest = require('restler')
+var md5 = require('md5')
 var app = express()
+
 var base_url = "http://gateway.marvel.com"
 var characters_base = "/v1/public/characters"
 var comics_base = "/v1/public/comics"
-var api_key = "?apikey=9aaf771e2b960537d98d91ff2451b2d6"
+var public_key = "9aaf771e2b960537d98d91ff2451b2d6"
+var private_key = "aba10e9f584d245bd51f13a9ce8111d142f27d00"
+var api_key = "?apikey=" + public_key
+
+var ts = 0;
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -38,6 +44,7 @@ app.listen(app.get('port'), function() {
 
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
+    ts = ts + 1
     for (i = 0; i < messaging_events.length; i++) {
         event = req.body.entry[0].messaging[i]
         sender = event.sender.id
@@ -55,20 +62,10 @@ app.post('/webhook/', function (req, res) {
 var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
 
 function listAllCharacters() {
-	var url = base_url + characters_base + api_key;
-	var options = {
-		host: url,
-		port: 80,
-		method: 'GET'
-	};
-	http.request(options, function(res) {
-		console.log('STATUS: ' + res.statusCode);
-		console.log('HEADERS: ' + JSON.stringify(res.headers));
-		res.setEncoding('utf8');
-		res.on('data', function (chunk) {
-			console.log('BODY: ' + chunk);
-		});
-	}).end();
+	var url = base_url + characters_base + api_key + "&ts=" + ts + "&hash=" + md5(ts+public_key+private_key);
+	rest.get(url).on('complete', function(data) {
+		console.log(data)
+	})
 }
 
 
