@@ -420,6 +420,8 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls,
         return;
     }
     for (i = 0; i < numCards; i++) {
+        if (wikiLinkUrls[i] == null)
+            continue
         var card = {
             "title": titles[i],
             "subtitle": descriptions[i],
