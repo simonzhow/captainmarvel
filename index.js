@@ -78,7 +78,7 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls
 			},
             {
                 "type": "postback",
-                "payload": ids[i], //searchForComic(ids, ""),
+                "payload": ids[i],
                 "title": "Related Comics"
             }]
 		}
