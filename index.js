@@ -59,6 +59,14 @@ app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
 
+function handleWitData(error, data) {
+    if (error) {
+        console.log("error");
+    } else {
+        console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+    }
+}
+
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
     for (i = 0; i < messaging_events.length; i++) {
@@ -68,13 +76,7 @@ app.post('/webhook/', function (req, res) {
             text = event.message.text
 			const context = {}
 			console.log("before wit call")
-			client.message(text, context, (error, data) => {
-				if (error) {
-                    console.log("error");
-				} else {
-					console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
-				}
-			})
+			client.message(text, context, handleWitData)
             if (text.toLowerCase().startsWith("character")) {
             	searchForCharacter(text.substring(10).trim(), sender)
             }
