@@ -75,7 +75,7 @@ app.post('/webhook/', function (req, res) {
             if (text.toLowerCase().startsWith("character")) {
                 searchForCharacter(text.substring(10).trim(), sender)
             } else if (text.toLowerCase().startsWith("comic")) {
-                searchForComic(text.substring(5).trim(), sender)
+                searchForComic(text.substring(5).trim(), sender, 0)
             } else if (text.toLowerCase().startsWith("event")) {
                 searchForEvent(text.substring(5).trim(), sender)
             } else if (text.toLowerCase().startsWith("help")) {
@@ -237,50 +237,8 @@ function searchForComic(search, sender, id) {
     if(search == ""){
         console.log(id)
         console.log("entered searchForComic properly")
-        // marvel.comics.characters(id).then(extractComicInfo) 
-        marvel.comics.characters(id).then(function(res) {
-            console.log("entered extract ComicInfo")
-            console.log(JSON.stringify(res))
-            var data = res.data
-            var count = res.meta.count
-            var titles = []
-            var descriptions = []
-            var thumbnails = []
-            var detailsUrls = []
-            var purchaseUrls = []
-            var readerUrls = []
-            count = Math.min(10, res.meta.count) //Can only show a max of 10 items
-            for(i = 0; i < count; i++) {
-                console.log("able to enter for loop")
-                var item = data[i]
-                var title = item.title
-                var description = item.description
-                var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
-                var urls = item.urls
-                var detailsUrl = null
-                var purachaseUrl = null
-                var readerUrl = null
-                for (j = 0; j < urls.length; j++) {
-                    var object = urls[j]
-                    if (object.type == "detail") {
-                        detailsUrl = object.url
-                        console.log(detailsUrl)
-                    } else if (object.type == "purchase"){
-                        purachaseUrl = object.url
-                    } else if (object.type == "reader") {
-                        readerUrl = object.url
-                    }
-                }
-                titles.push(title)
-                descriptions.push(description)
-                thumbnails.push(thumbnailUrl)
-                detailsUrls.push(detailsUrl)
-                purchaseUrls.push(purachaseUrl)
-                readerUrls.push(readerUrl)
-                console.log(title)
-            }
-            sendComicMessage(sender, titles, descriptions, thumbnails, detailsUrls, purchaseUrls, readerUrls)
-        })
+        marvel.characters.comics(id).then(extractComicInfo) 
+
     }
     else if(id == 0){
         marvel.comics.findNameStartsWith(search).then(extractComicInfo)
