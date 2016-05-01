@@ -66,6 +66,10 @@ app.post('/webhook/', function (req, res) {
 function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids) {
     var elements = [] 
     var numCards = names.length
+    if (numCards == 0) {
+        sendTextMessage(sender, "No results found")
+        return;
+    }
 	for (i = 0; i < numCards; i++) {
 		var card = {
 			"title": names[i],
