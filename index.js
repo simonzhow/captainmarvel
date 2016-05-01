@@ -254,7 +254,7 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
     }
     for (i = 0; i < numCards; i++) {
         var buttons =  []
-        if(detailsUrls[i] != "") {
+        if(detailsUrls[i] != null) {
             var detailsButton = {
                 "type": "web_url",
                 "url": detailsUrls[i],
@@ -262,15 +262,15 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
             }
             buttons.push(detailsButton)
         }
-        if(purchaseUrls[i] != "") { 
+        if(purchaseUrls[i] != null) { 
             var purchaseButton = {
                 "type": "web_url",
                 "url": purchaseUrls[i],
                 "title": "Buy Here"
             }
             buttons.push(purchaseButton)
-        }]
-        if(readerUrls[i] != "") {
+        }
+        if(readerUrls[i] != null) {
             var urlButton = {
                 "type": "web_url",
                 "url": readerUrls[i],
