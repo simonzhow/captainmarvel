@@ -69,18 +69,34 @@ function handleWitData(error, data) {
     switch(entities.intent[0].value) {
     case "search_comic":
         var funcToRun = searchForComic
+        if (!_.has(entities, 'comic')) {
+            unableToParse();
+            return;
+        }
         var searchTerm = entities.comic[0].value
         break;
     case "search_character":
         var funcToRun = searchForCharacter
+        if (!_.has(entities, 'character')) {
+            unableToParse();
+            return;
+        }
         var searchTerm = entities.character[0].value
         break;
     case "search_event":
         var funcToRun = searchForEvent
+        if (!_.has(entities, 'event')) {
+            unableToParse();
+            return;
+        }
         var searchTerm = entities.event[0].value
         break;
     case "search_generic":
         var funcToRun = searchForGeneric
+        if (!_.has(entities, 'generic')) {
+            unableToParse();
+            return;
+        }
         var searchTerm = entities.generic[0].value
         break;
     default:
