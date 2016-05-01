@@ -323,6 +323,8 @@ function searchForComic(search, sender, id) {
     }
     else {
         id = getCharacterId(search);
+        console.log(id)
+        console.log("should be the id of the character")
         // marvel.comics.
     }
     marvel.characters.comics(id).then(extractComicInfo) 
