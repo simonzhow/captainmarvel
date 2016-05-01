@@ -57,8 +57,8 @@ app.post('/webhook/', function (req, res) {
                 searchForSeries(text.substring(6).trim(), sender)
             } else if (text.toLowerCase().startsWith("stories")) {
                 searchForStories(text.substring(7).trim(), sender)
-            } else if (text.toLowerCase().startsWith("creators")) {
-                searchForCreators(text.substring(8).trim(), sender)
+            } else if (text.toLowerCase().startsWith("help")) {
+
             }
 
         }
@@ -189,14 +189,9 @@ function searchForEvent(search, sender) {
 
 function searchForStories(search, sender) {
     marvel.stories.findNameStartsWith(search).then(function(res) {
-        
+
     })
 }
-
-function searchForCreators(search, sender) {
-
-}
-
 
 function sendTextMessage(sender, text) {
     messageData = {
