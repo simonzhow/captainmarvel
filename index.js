@@ -66,10 +66,7 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-			const context = {}
-			console.log("before wit call");
-			console.log(typeof(function(error, data) { }))
-			client.message(text, context, function (error, data) {
+			client.message(text, function (error, data) {
 				if (error) {
                     console.log("error");
 				} 
