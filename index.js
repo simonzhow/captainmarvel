@@ -67,6 +67,7 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
 			const context = {};
+			console.log("before wit call");
 			client.message(text, context, function (error, data) {
 				if (error) {
 					// Wit was unsuccessful
