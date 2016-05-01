@@ -339,7 +339,6 @@ function searchForEvent(search, sender) {
         var descriptions = []
         var thumbnails = []
         var detailsUrls = []
-        var wikiLinkUrls = []
         count = Math.min(10, res.meta.count) //Can only show a max of 10 items
         for(i = 0; i < count; i++) {
             var item = data[i]
@@ -354,8 +353,6 @@ function searchForEvent(search, sender) {
                 var object = urls[j]
                 if (object.type == "detail") {
                     detailsUrl = object.url
-                } else if (object.type == "wiki") {
-                    wikiLinkUrl = object.url
                 }
             }
             titles.push(title)
@@ -363,9 +360,8 @@ function searchForEvent(search, sender) {
             descriptions.push(description)
             thumbnails.push(thumbnailUrl)
             detailsUrls.push(detailsUrl)
-            wikiLinkUrls.push(wikiLinkUrl)
         }
-        sendEventMessage(sender, titles, descriptions, thumbnails, wikiLinkUrls, detailsUrls, ids)
+        sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, ids)
     })
 }
 
@@ -424,7 +420,7 @@ function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUr
   });
 }
 
-function sendEventMessage(sender, titles, descriptions, thumbnails, wikiLinkUrls, detailsUrls, ids) {
+function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, ids) {
     console.log("entered event message")
     var elements = [] 
     var numCards = titles.length
@@ -438,10 +434,6 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, wikiLinkUrls
             "subtitle": descriptions[i],
             "image_url": thumbnails[i],
             "buttons": [{
-                "type": "web_url",
-                "url": wikiLinkUrls[i],
-                "title": "Wiki"
-            }, {
                 "type": "web_url",
                 "url": detailsUrls[i],
                 "title": "More Information"
