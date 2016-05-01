@@ -327,7 +327,7 @@ function searchForComic(search, sender, id) {
 }
 
 function searchComicsByEvent(id, sender) {
-    marvel.event.characters(id).then(extractComicInfo)
+    marvel.event.comics(id).then(extractComicInfo)
 }
 
 function searchForEvent(search, sender) {
@@ -348,7 +348,6 @@ function searchForEvent(search, sender) {
             var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
             var urls = item.urls
             var detailsUrl = null
-            var wikiLinkUrl = null
             for (j = 0; j < urls.length; j++) {
                 var object = urls[j]
                 if (object.type == "detail") {
