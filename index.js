@@ -87,7 +87,8 @@ app.post('/webhook/', function (req, res) {
     if(event.postback) {
         text = JSON.stringify(event.postback);
         console.log(text)
-        searchForComic("", sender, text)
+        var res = text.split(" ")
+        searchForComic("", sender, res[1])
     }
     res.sendStatus(200)
 })
@@ -178,7 +179,7 @@ function searchForComic(search, sender, id) {
         marvel.comics.characters(parseInt(id)).then(extractComicInfo) 
     }
     else if(id == 0){
-        marvel.comics.characters(search).then(extractComicInfo)
+        marvel.comics.findNameStartsWith(search).then(extractComicInfo)
         // marvel.comics.
     }
 }
@@ -240,7 +241,7 @@ function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUr
                 "title": "More Information"
             }, {
                 "type": "postback",
-                "payload": "comics_for_character_id:" + ids[i].toString(),
+                "payload": "comics_for_character_id: " + ids[i].toString(),
                 "title": "Related Comics"
             }]
         }
@@ -294,11 +295,11 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls,
                 "title": "Wiki"
             }, {
                 "type": "postback",
-                "payload": "comics_for_event_id:" + ids[i].toString(),
+                "payload": "comics_for_event_id: " + ids[i].toString(),
                 "title": "Related Comics"
             }, {
                 "type": "postback",
-                "payload": "characters_for_event_id:" + ids[i].toString(),
+                "payload": "characters_for_event_id: " + ids[i].toString(),
                 "title": "Related Characters"
             }]
         }
