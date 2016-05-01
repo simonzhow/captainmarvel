@@ -144,7 +144,7 @@ function searchForCharacterByQuery(search, sender) {
     marvel.characters.findNameStartsWith(search).then(extractCharacterInfo)
 }
 
-function searchEventsForCharacter(search, sender) {
+function searchEventsForCharacter(query, sender) {
     marvel.characters.findNameStartsWith(query).then(function(res) {
         var count = res.meta.count
         if (count == 0) {
