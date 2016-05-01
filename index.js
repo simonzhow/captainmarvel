@@ -60,56 +60,6 @@ app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
 
-var globalSender;
-
-function handleWitData(error, data) {
-    if (error) {
-        // Wit could not parse the string
-        return
-    } 
-    console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
-    var entities = data.outcomes[0].entities;
-    var skipEntities = false;
-    if (_.has(entities, 'intent') && entities.intent[0].value === "hungry") {
-        hungry(globalSender);
-        return;
-    }
-    if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
-        var funcToRun = searchForGeneric
-        skipEntities = true; 
-    }
-    if (!_.has(entities, 'object')) {
-        unableToParse();
-        return;
-    }
-    var searchTerm = entities.object[0].value
-    if (!skipEntities) {
-        switch(entities.intent[0].value) {
-        case "search_comic":
-            var funcToRun = searchForComic
-            break;
-        case "search_character":
-            var funcToRun = searchForCharacterByQuery
-            break;
-        case "search_event":
-            var funcToRun = searchForEvent
-            break;
-        case "search_generic":
-            var funcToRun = searchForGeneric
-            break;
-        case "search_comics_for_character":
-            var funcToRun = getComicsForCharacter
-            break;
-        case "help":
-            var helpText = "Type in a question about the Marvel Universe to get started!\nFor example, you can try asking \"Who is Iron Man?\""
-            sendTextMessage(globalSender, helpText)
-            return;
-        default:
-            break;
-        }
-    }
-    funcToRun(searchTerm, globalSender);
-}
 
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
@@ -118,8 +68,54 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-            globalSender = sender;
-			client.message(text, handleWitData);
+			client.message(text, function (error, data) {
+                if (error) {
+                    // Wit could not parse the string
+                    return
+                } 
+                console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+                var entities = data.outcomes[0].entities;
+                var skipEntities = false;
+                if (_.has(entities, 'intent') && entities.intent[0].value === "hungry") {
+                    hungry(sender);
+                    return;
+                }
+                if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
+                    var funcToRun = searchForGeneric
+                    skipEntities = true; 
+                }
+                if (!_.has(entities, 'object')) {
+                    unableToParse();
+                    return;
+                }
+                var searchTerm = entities.object[0].value
+                if (!skipEntities) {
+                    switch(entities.intent[0].value) {
+                    case "search_comic":
+                        var funcToRun = searchForComic
+                        break;
+                    case "search_character":
+                        var funcToRun = searchForCharacterByQuery
+                        break;
+                    case "search_event":
+                        var funcToRun = searchForEvent
+                        break;
+                    case "search_generic":
+                        var funcToRun = searchForGeneric
+                        break;
+                    case "search_comics_for_character":
+                        var funcToRun = getComicsForCharacter
+                        break;
+                    case "help":
+                        var helpText = "Type in a question about the Marvel Universe to get started!\nFor example, you can try asking \"Who is Iron Man?\""
+                        sendTextMessage(sender, helpText)
+                        return;
+                    default:
+                        break;
+                    }
+                }
+                funcToRun(searchTerm, sender);
+            });
         }
     }
     if(event.postback) {
