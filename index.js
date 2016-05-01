@@ -3,18 +3,16 @@ var bodyParser = require('body-parser')
 var request = require('request')
 var md5 = require('md5')
 var api = require('marvel-api')
+var Wit = require('node-wit').Wit;
 var app = express()
 var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
 var public_key = '9aaf771e2b960537d98d91ff2451b2d6'
 var private_key = 'aba10e9f584d245bd51f13a9ce8111d142f27d00'
+var witToken = "2QN2FH6KBYEISQHLJOA6AAQ7PC3VQPF5"
 var marvel = api.createClient({
     publicKey: public_key,
     privateKey: private_key
 });
-
-var witToken = "2QN2FH6KBYEISQHLJOA6AAQ7PC3VQPF5"
-
-var Wit = require('node-wit').Wit;
 
 const actions = {
 	say(sessionId, context, message, cb) {
@@ -80,8 +78,6 @@ app.post('/webhook/', function (req, res) {
                 searchForComic(text.substring(5).trim(), sender)
             } else if (text.toLowerCase().startsWith("event")) {
                 searchForEvent(text.substring(5).trim(), sender)
-            } else if (text.toLowerCase().startsWith("series")) {
-                searchForSeries(text.substring(6).trim(), sender)
             } else if (text.toLowerCase().startsWith("help")) {
                 
             }
@@ -131,7 +127,7 @@ function searchForCharacter(search, sender) {
             detailsUrls.push(detailsUrl)
             comicLinkUrls.push(comicLinkUrl)
         }
-        sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids)
+        sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids)
     })
     
 }
@@ -226,25 +222,54 @@ function searchForEvent(search, sender) {
     })
 }
 
-function sendTextMessage(sender, text) {
-    messageData = {
-        text:text
+function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids) {
+    var elements = [] 
+    var numCards = names.length
+    if (numCards == 0) {
+        sendTextMessage(sender, "No results found")
+        return;
     }
-    request({
-        url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
-        method: 'POST',
-        json: {
-            recipient: {id:sender},
-            message: messageData,
+    for (i = 0; i < numCards; i++) {
+        var card = {
+            "title": names[i],
+            "subtitle": descriptions[i],
+            "image_url": thumbnails[i],
+            "buttons": [{
+                "type": "web_url",
+                "url": detailsUrls[i],
+                "title": "More Information"
+            }, {
+                "type": "postback",
+                "payload": "comics_for_character_id:" + ids[i].toString(),
+                "title": "Related Comics"
+            }]
         }
-    }, function(error, response, body) {
-        if (error) {
-            console.log('Error sending messages: ', error)
-        } else if (response.body.error) {
-            console.log('Error: ', response.body.error)
+        elements.push(card)
+    }
+    messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": elements
+            }
         }
-    })
+    };
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token:token},
+    method: 'POST',
+    json: {
+      recipient: {id:sender},
+      message: messageData,
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error sending message: ', error);
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error);
+    }
+  });
 }
 
 function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, wikiLinkUrls, ids) {
@@ -306,56 +331,26 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls,
 
 }
 
-function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids) {
-    var elements = [] 
-    var numCards = names.length
-    if (numCards == 0) {
-        sendTextMessage(sender, "No results found")
-        return;
-    }
-    for (i = 0; i < numCards; i++) {
-        var card = {
-            "title": names[i],
-            "subtitle": descriptions[i],
-            "image_url": thumbnails[i],
-            "buttons": [{
-                "type": "web_url",
-                "url": detailsUrls[i],
-                "title": "More Information"
-            }, {
-                "type": "postback",
-                "payload": "comics_for_character_id:" + ids[i].toString(),
-                "title": "Related Comics"
-            }]
-        }
-        elements.push(card)
-    }
+function sendTextMessage(sender, text) {
     messageData = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "generic",
-                "elements": elements
-            }
+        text:text
+    }
+    request({
+        url: 'https://graph.facebook.com/v2.6/me/messages',
+        qs: {access_token:token},
+        method: 'POST',
+        json: {
+            recipient: {id:sender},
+            message: messageData,
         }
-    };
-  request({
-    url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
-    method: 'POST',
-    json: {
-      recipient: {id:sender},
-      message: messageData,
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log('Error sending message: ', error);
-    } else if (response.body.error) {
-      console.log('Error: ', response.body.error);
-    }
-  });
+    }, function(error, response, body) {
+        if (error) {
+            console.log('Error sending messages: ', error)
+        } else if (response.body.error) {
+            console.log('Error: ', response.body.error)
+        }
+    })
 }
-
 
 
 
