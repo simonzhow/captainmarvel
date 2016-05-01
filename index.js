@@ -182,6 +182,7 @@ function searchForComic(search, sender, id) {
         marvel.comics.findNameStartsWith(search).then(extractComicInfo)
         // marvel.comics.
     }
+    console.log("exited searchForComic")
 }
 
 function searchForEvent(search, sender) {
