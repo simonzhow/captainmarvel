@@ -71,7 +71,7 @@ function handleWitData(error, data) {
     var entities = data.outcomes[0].entities;
     var skipEntities = false;
     if (_.has(entities, 'intent') && entities.intent[0].value === "hungry") {
-        hungry();
+        hungry(globalSender);
         return;
     }
     if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
@@ -96,6 +96,9 @@ function handleWitData(error, data) {
             break;
         case "search_generic":
             var funcToRun = searchForGeneric
+            break;
+        case "search_comics_for_character":
+            var funcToRun = getComicsForCharacter
             break;
         case "help":
             var helpText = "Type in a question about the Marvel Universe to get started!\nFor example, you can try asking \"Who is Iron Man?\""
@@ -513,4 +516,53 @@ function sendTextMessage(sender, text) {
         }
     })
 }
+
+function hungry(sender)
+{
+
+    var delivery = {
+      pickup_address: "972 Gayley Ave, Los Angeles, CA",
+      dropoff_address: "407 Charles E Young Dr W, Los Angeles, CA"
+    };
+
+    postmates.quote(delivery, function(err, res) {
+    console.log(res.body.fee);  
+    sendTextMessage(sender, 'Delivery fee for a Postmates order to you comes out to be: ' + res.body.fee);
+});
+}
+
+
+//     // var delivery = {
+//     //     manifest: "a sandwhich",
+//     //     pickup_name: "The Warehouse",
+//     //     pickup_address: "20 McAllister St, San Francisco, CA",
+//     //     pickup_phone_number: "555-555-5555",
+//     //     pickup_business_name: "Optional Pickup Business Name, Inc.",
+//     //     pickup_notes: "Optional note that this is Invoice #123",
+//     //     dropoff_name: "Alice",
+//     //     dropoff_address: "101 Market St, San Francisco, CA",
+//     //     dropoff_phone_number: "415-555-1234",
+//     //     dropoff_business_name: "Optional Dropoff Business Name, Inc.",
+//     //     dropoff_notes: "Optional note to ring the bell",
+//     //     quote_id: "qUdje83jhdk"
+//     // };
+ 
+//     // postmates.new(delivery, function(err, res) {
+//     //     // `res.body` 
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
 
