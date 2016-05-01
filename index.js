@@ -14,6 +14,8 @@ var marvel = api.createClient({
     publicKey: public_key,
     privateKey: private_key
 });
+var Postmates = require('postmates');
+var postmates = new Postmates('cus_KOQ26V1V9K3Zkk', 'ef65a92b-aec4-4147-94b2-8e106ca7c39f');
 
 const actions = {
 	say(sessionId, context, message, cb) {
@@ -68,6 +70,10 @@ function handleWitData(error, data) {
     console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
     var entities = data.outcomes[0].entities;
     var skipEntities = false;
+    if (_.has(entities, 'intent') && entities.intent[0].value === "hungry") {
+        hungry();
+        return;
+    }
     if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
         var funcToRun = searchForGeneric
         skipEntities = true; 
@@ -424,6 +430,8 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls,
         return;
     }
     for (i = 0; i < numCards; i++) {
+        if (wikiLinkUrls[i] == null)
+            continue
         var card = {
             "title": titles[i],
             "subtitle": descriptions[i],
