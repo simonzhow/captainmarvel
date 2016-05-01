@@ -134,6 +134,7 @@ function searchForCharacter(search, sender) {
 }
 
 function extractComicInfo(res) {
+    console.log("entered extract ComicInfo")
     var data = res.data
     var count = res.meta.count
     var titles = []
@@ -144,6 +145,7 @@ function extractComicInfo(res) {
     var readerUrls = []
     count = Math.min(10, res.meta.count) //Can only show a max of 10 items
     for(i = 0; i < count; i++) {
+        console.log("able to enter for loop")
         var item = data[i]
         var title = item.title
         var description = item.description
