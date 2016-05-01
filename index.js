@@ -97,8 +97,6 @@ function handleWitData(error, data) {
         case "search_generic":
             var funcToRun = searchForGeneric
             break;
-        case "search_comics_for_character":
-            var funcToRun = getComicsForCharacter
         case "help":
             var helpText = "Type in a question about the Marvel Universe to get started!\nFor example, you can try asking \"Who is Iron Man?\""
             sendTextMessage(globalSender, helpText)
@@ -158,10 +156,10 @@ function getCharacterId(query) {
     })
 }
 
-function getComicsForCharacter(query, sender) {
+function getComicsForCharacter(query) {
     var id = getCharacterId(query)
     if (id == "-1") {
-        sendTextMessage(sender, "No character found")
+        sendTextMessage("No character found")
         return
     }
     marvel.characters.comics(id).then(extractComicInfo)
@@ -324,13 +322,14 @@ function searchForComic(search, sender, id) {
     }
     else if(search != ""){
         console.log("entered if statement correctly from searching comic directly")
-        marvel.comics.findNameStartsWith(search).then(extractComicInfo)
+        marvel.comics.findAll2(20, 0, search).then(extractComicInfo)
+        // marvel.comics.
     }
     console.log("exited searchForComic")
 }
 
 function searchComicsByEvent(id, sender) {
-    marvel.event.comics(id).then(extractComicInfo)
+    marvel.event.characters(id).then(extractComicInfo)
 }
 
 function searchForEvent(search, sender) {
