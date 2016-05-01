@@ -87,8 +87,8 @@ app.post('/webhook/', function (req, res) {
     if(event.postback) {
         text = JSON.stringify(event.postback);
         console.log(text)
-        var res = text.split(" ")
-        searchForComic("", sender, res[1])
+        var stringTemp = text.split(" ")
+        searchForComic("", sender, stringTemp[1])
     }
     res.sendStatus(200)
 })
