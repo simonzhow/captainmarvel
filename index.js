@@ -89,7 +89,7 @@ function handleWitData(error, data) {
         
     }
     console.log(entities.intent[0].value);
-    console.log(JSON.stringify(entities.event[0]));
+    console.log(JSON.stringify(entities.comic[0].value));
 }
 
 app.post('/webhook/', function (req, res) {
