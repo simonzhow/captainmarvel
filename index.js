@@ -128,7 +128,7 @@ app.post('/webhook/', function (req, res) {
         if (payload == "comics_for_character_id") {
             searchForComic("", sender, numb)
         } else if (payload == "comics_for_event_id") {
-            searchComicsByEvent(number, sender)
+            searchComicsByEvent(numb, sender)
         } else if (payload == "characters_for_event_id") {
             searchForCharacterByEvent(numb, sender)
         }
@@ -307,7 +307,7 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
             var urlButton = {
                 "type": "web_url",
                 "url": readerUrls[i],
-                "title": "Read Online Comic"
+                "title": "Read Comic Online"
             }
             buttons.push(urlButton)
         }
@@ -360,7 +360,7 @@ function searchForComic(search, sender, id) {
 }
 
 function searchComicsByEvent(id, sender) {
-    marvel.event.characters(id).then(extractComicInfo)
+    marvel.events.comics(id).then(extractComicInfo)
 }
 
 
@@ -382,7 +382,6 @@ function searchForEvent(search, sender) {
             var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
             var urls = item.urls
             var detailsUrl = null
-            var wikiLinkUrl = null
             for (j = 0; j < urls.length; j++) {
                 var object = urls[j]
                 if (object.type == "detail") {
