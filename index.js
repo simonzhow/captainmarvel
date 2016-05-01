@@ -510,6 +510,8 @@ function sendTextMessage(sender, text) {
 function hungry(sender)
 {
 
+    console.log("reached function")
+
     var delivery = {
       pickup_address: "972 Gayley Ave, Los Angeles, CA",
       dropoff_address: "407 Charles E Young Dr W, Los Angeles, CA"
@@ -517,7 +519,7 @@ function hungry(sender)
 
     postmates.quote(delivery, function(err, res) {
     console.log(res.body.fee);  
-    sendTextMessage(sender, 'Delivery fee for a Postmates order to you comes out to be: ' + res.body.fee);
+    sendTextMessage(sender, "Delivery fee for a Postmates order to you comes out to be: " + res.body.fee);
     });
 }
 
