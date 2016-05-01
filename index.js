@@ -167,11 +167,66 @@ function extractComicInfo(res) {
         descriptions.push(description)
         thumbnails.push(thumbnailUrl)
         detailsUrls.push(detailsUrl)
-        purchaseUrls.push(comicLinkUrl)
+        purchaseUrls.push(purachaseUrl)
         readerUrls.push(readerUrl)
     }
-    sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls)
+    sendComicMessage(sender, titles, descriptions, thumbnails, detailsUrls, purchaseUrls, readerUrls)
 }
+
+function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, purchaseUrls, readerUrls) {
+    var elements = [] 
+    var numCards = names.length
+    if (numCards == 0) {
+        sendTextMessage(sender, "No results found")
+        return;
+    }
+    for (i = 0; i < numCards; i++) {
+        var card = {
+            "title": names[i],
+            "subtitle": descriptions[i],
+            "image_url": thumbnails[i],
+            "buttons": [{
+                "type": "web_url",
+                "url": detailsUrls[i],
+                "title": "More Information"
+            },{ 
+                "type": "web_url",
+                "url": purchaseUrls[i],
+                "title": "Buy Here"
+            }, {
+                "type": "web_url",
+                "url": readerUrls[i],
+                "title": "Read Online Comic"
+            }]
+        }
+        elements.push(card)
+    }
+    messageData = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "generic",
+                "elements": elements
+            }
+        }
+    };
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token:token},
+    method: 'POST',
+    json: {
+      recipient: {id:sender},
+      message: messageData,
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error sending message: ', error);
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error);
+    }
+  });
+}
+
 
 function searchForComic(search, sender, id) {
     if(search == ""){
@@ -223,6 +278,8 @@ function searchForEvent(search, sender) {
         sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, wikiLinkUrls, ids)
     })
 }
+
+
 
 function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids) {
     var elements = [] 
