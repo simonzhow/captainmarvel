@@ -64,7 +64,7 @@ app.post('/webhook/', function (req, res) {
     if(event.postback) {
         text = JSON.stringify(event.postback);
         console.log(text)
-        // searchForComic()
+        searchForComic("", sender, text)
     }
     res.sendStatus(200)
 })
@@ -109,41 +109,55 @@ function searchForCharacter(search, sender) {
     
 }
 
-function searchForComic(search, sender) {
-    marvel.characters.findNameStartsWith(search).then(function(res) {
-        var data = res.data
-        var count = res.meta.count
-        var names = []
-        var descriptions = []
-        var thumbnails = []
-        var detailsUrls = []
-        var comicLinkUrls = []
-        count = Math.min(10, res.meta.count) //Can only show a max of 10 items
-        for(i = 0; i < count; i++) {
-            var item = data[i]
-            var name = item.name
-            var description = item.description
-            var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
-            var urls = item.urls
-            var detailsUrl = null
-            var comicLinkUrl = null
-            for (j = 0; j < urls.length; j++) {
-                var object = urls[j]
-                if (object.type == "detail") {
-                    detailsUrl = object.url
-                } else if (object.type == "comiclink") {
-                    comicLinkUrl = object.url
-                }
+function extractComicInfo(res) {
+    var data = res.data
+    var count = res.meta.count
+    var titles = []
+    var descriptions = []
+    var thumbnails = []
+    var detailsUrls = []
+    var purchaseUrls = []
+    var readerUrls = []
+    count = Math.min(10, res.meta.count) //Can only show a max of 10 items
+    for(i = 0; i < count; i++) {
+        var item = data[i]
+        var title = item.title
+        var description = item.description
+        var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
+        var urls = item.urls
+        var detailsUrl = null
+        var purachaseUrl = null
+        var readerUrl = null
+        for (j = 0; j < urls.length; j++) {
+            var object = urls[j]
+            if (object.type == "detail") {
+                detailsUrl = object.url
+                console.log(detailsUrl)
+            } else if (object.type == "purchase"){
+                purachaseUrl = object.url
+            } else if (object.type == "reader") {
+                readerUrl = object.url
             }
-            names.push(name)
-            descriptions.push(description)
-            thumbnails.push(thumbnailUrl)
-            detailsUrls.push(detailsUrl)
-            comicLinkUrls.push(comicLinkUrl)
         }
-        sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls)
-    })
-    
+        titles.push(title)
+        descriptions.push(description)
+        thumbnails.push(thumbnailUrl)
+        detailsUrls.push(detailsUrl)
+        purchaseUrls.push(comicLinkUrl)
+        readerUrls.push(readerUrl)
+    }
+    sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls)
+}
+
+function searchForComic(search, sender, id) {
+    if(search == ""){
+        console.log("entered searchForComic properly")
+        marvel.comics.characters(parseInt(id)).then(extractComicInfo) 
+    }
+    else if(id == 0){
+        marvel.comics.characters(search).then(extractComicInfo)
+        // marvel.comics.
+    }
 }
 
 function searchForEvent(search, sender) {
@@ -283,7 +297,7 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls
                 "title": "More Information"
             }, {
                 "type": "postback",
-                "payload": ids[i].toString(),
+                "payload": "comics_for_character_id:" + ids[i].toString(),
                 "title": "Related Comics"
             }]
         }
