@@ -327,7 +327,7 @@ function searchForComic(search, sender, id) {
 }
 
 function searchComicsByEvent(id, sender) {
-    marvel.event.comics(id).then(extractComicInfo)
+    marvel.events.comics(id).then(extractComicInfo)
 }
 
 function searchForEvent(search, sender) {
