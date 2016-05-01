@@ -67,14 +67,14 @@ app.post('/webhook/', function (req, res) {
         if (event.message && event.message.text) {
             text = event.message.text
 			const context = {}
-			console.log("before wit call")
-			client.message(text, context, (error, data) => {
+			console.log("before wit call");
+			client.message(text, context, function (error, data) {
 				if (error) {
                     console.log("error");
 				} else {
 					console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
 				}
-			})
+			});
             if (text.toLowerCase().startsWith("character")) {
             	searchForCharacter(text.substring(10).trim(), sender)
             }
