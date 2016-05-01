@@ -55,8 +55,6 @@ app.post('/webhook/', function (req, res) {
                 searchForEvent(text.substring(5).trim(), sender)
             } else if (text.toLowerCase().startsWith("series")) {
                 searchForSeries(text.substring(6).trim(), sender)
-            } else if (text.toLowerCase().startsWith("stories")) {
-                searchForStories(text.substring(7).trim(), sender)
             } else if (text.toLowerCase().startsWith("help")) {
 
             }
@@ -184,12 +182,6 @@ function searchForEvent(search, sender) {
             wikiLinkUrls.push(comicLinkUrl)
         }
         sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, wikiLinkUrls, ids)
-    })
-}
-
-function searchForStories(search, sender) {
-    marvel.stories.findNameStartsWith(search).then(function(res) {
-
     })
 }
 
