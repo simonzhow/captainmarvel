@@ -233,6 +233,7 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
 
 function searchForComic(search, sender, id) {
     if(search == ""){
+        console.log(id)
         console.log("entered searchForComic properly")
         marvel.comics.characters(parseInt(id)).then(extractComicInfo) 
     }
