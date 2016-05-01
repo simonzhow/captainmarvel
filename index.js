@@ -274,7 +274,7 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
             var urlButton = {
                 "type": "web_url",
                 "url": readerUrls[i],
-                "title": "Read Online Comic"
+                "title": "Read Comic Online"
             }
             buttons.push(urlButton)
         }
