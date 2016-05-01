@@ -1,3 +1,4 @@
+var _ = require('underscore')
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
@@ -66,22 +67,26 @@ function handleWitData(error, data) {
     } 
     console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
     var entities = data.outcomes[0].entities;
+    if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
+        var funcToRun = searchForGeneric
+    }
+    if (!_.has(entities, 'object')) {
+        unableToParse();
+        return;
+    }
+    var searchTerm = entities.object[0].value
     switch(entities.intent[0].value) {
     case "search_comic":
         var funcToRun = searchForComic
-        var searchTerm = entities.comic[0].value
         break;
     case "search_character":
         var funcToRun = searchForCharacterByQuery
-        var searchTerm = entities.character[0].value
         break;
     case "search_event":
         var funcToRun = searchForEvent
-        var searchTerm = entities.event[0].value
         break;
     case "search_generic":
         var funcToRun = searchForGeneric
-        var searchTerm = entities.generic[0].value
         break;
     default:
     }
