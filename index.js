@@ -344,7 +344,7 @@ function searchForEvent(search, sender) {
         var descriptions = []
         var thumbnails = []
         var detailsUrls = []
-        var wikiLinkUrls = []
+        //var wikiLinkUrls = []
         count = Math.min(10, res.meta.count) //Can only show a max of 10 items
         for(i = 0; i < count; i++) {
             var item = data[i]
@@ -359,24 +359,18 @@ function searchForEvent(search, sender) {
                 var object = urls[j]
                 if (object.type == "detail") {
                     detailsUrl = object.url
-                } else if (object.type == "wiki") {
-                    wikiLinkUrl = object.url
-                }
+                } //else if (object.type == "wiki") {
+                    //wikiLinkUrl = object.url
+                //}
             }
-            console.log(title)
-            console.log(id)
-            console.log(description)
-            console.log(thumbnailUrl)
-            console.log(detailsUrl)
-            console.log(wikiLinkUrl)
             titles.push(title)
             ids.push(id)
             descriptions.push(description)
             thumbnails.push(thumbnailUrl)
             detailsUrls.push(detailsUrl)
-            wikiLinkUrls.push(wikiLinkUrl)
+            //wikiLinkUrls.push(wikiLinkUrl)
         }
-        sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, wikiLinkUrls, ids)
+        sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, ids)
     })
 }
 
@@ -435,7 +429,7 @@ function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUr
   });
 }
 
-function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, wikiLinkUrls, ids) {
+function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, ids) {
     var elements = [] 
     var numCards = names.length
     if (numCards == 0) {
@@ -453,10 +447,6 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls,
                 "type": "web_url",
                 "url": detailsUrls[i],
                 "title": "More Information"
-            }, {
-                "type": "web_url",
-                "url": wikiLinkUrls[i],
-                "title": "Wiki"
             }, {
                 "type": "postback",
                 "payload": "comics_for_event_id: " + ids[i].toString(),
