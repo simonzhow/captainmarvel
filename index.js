@@ -141,19 +141,52 @@ function searchForCharacterByQuery(search, sender) {
     marvel.characters.findNameStartsWith(search).then(extractCharacterInfo)
 }
 
-function searchForCharacterByEvent(id, sender) {
-    marvel.events.characters(id).then(extractCharacterInfo)
-}
-
-function getCharacterId(query) {
+function searchEventsForCharacter(search, sender) {
     marvel.characters.findNameStartsWith(query).then(function(res) {
         var count = res.meta.count
         if (count == 0) {
             return "-1"
         }
-        return res.data[0].id
+        marvel.characters.events(res.data[0].id).then(function(res) {
+            var data = res.data
+            var count = res.meta.count
+            var titles = []
+            var ids = []
+            var descriptions = []
+            var thumbnails = []
+            var detailsUrls = []
+            count = Math.min(10, res.meta.count) //Can only show a max of 10 items
+            for(i = 0; i < count; i++) {
+                var item = data[i]
+                var title = item.title
+                var id = item.id
+                var description = item.description
+                var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
+                var urls = item.urls
+                var detailsUrl = null
+                var wikiLinkUrl = null
+                for (j = 0; j < urls.length; j++) {
+                    var object = urls[j]
+                    if (object.type == "detail") {
+                        detailsUrl = object.url
+                    }
+                }
+                titles.push(title)
+                ids.push(id)
+                descriptions.push(description)
+                thumbnails.push(thumbnailUrl)
+                detailsUrls.push(detailsUrl)
+            }
+            sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, ids)
+        })
     })
 }
+
+function searchForCharacterByEvent(id, sender) {
+    marvel.events.characters(id).then(extractCharacterInfo)
+}
+
+
 
 function getComicsForCharacter(query, sender) {
     marvel.characters.findNameStartsWith(query).then(function(res) {
@@ -329,6 +362,7 @@ function searchForComic(search, sender, id) {
 function searchComicsByEvent(id, sender) {
     marvel.event.characters(id).then(extractComicInfo)
 }
+
 
 function searchForEvent(search, sender) {
     marvel.events.findNameStartsWith(search).then(function(res) {
