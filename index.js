@@ -128,7 +128,7 @@ app.post('/webhook/', function (req, res) {
         if (payload == "comics_for_character_id") {
             searchForComic("", sender, numb)
         } else if (payload == "comics_for_event_id") {
-            searchComicsByEvent(number, sender)
+            searchComicsByEvent(numb, sender)
         } else if (payload == "characters_for_event_id") {
             searchForCharacterByEvent(numb, sender)
         }
