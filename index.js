@@ -323,6 +323,7 @@ function searchForEvent(search, sender) {
             var title = item.title
             var id = item.id
             var description = item.description
+
             var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
             var urls = item.urls
             var detailsUrl = null
@@ -338,7 +339,7 @@ function searchForEvent(search, sender) {
             console.log(title)
             console.log(id)
             console.log(description)
-            console.log(thumbnail)
+            console.log(thumbnailUrl)
             console.log(detailsUrl)
             console.log(wikiLinkUrl)
             titles.push(title)
