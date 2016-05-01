@@ -509,11 +509,49 @@ function sendTextMessage(sender, text) {
     })
 }
 
+function sendPostmatesMessage(sender) {
+  messageData = {
+    "attachment": {
+      "type": "template",
+      "payload": {
+        "template_type": "generic",
+        "elements": [{
+          "title": "Postmates Order",
+          "image_url": "http://www.siliconhillsnews.com/wp-content/uploads/2014/06/Logo-Postmates.png",
+          "buttons": [{
+            "type": "web_url",
+            "url": "https://postmates.com/la/fat-sals-westwood-los-angeles/view/6448c8fa-cd14-4709-a983-2e88aff08a12",
+            "title": "Order Fat Sal's"
+          }, {
+            "type": "web_url",
+            "url": "https://postmates.com/los-angeles",
+            "title": "Order Something Else in Westwood"
+            
+          }]
+        }]
+      }
+    }
+    }
+};
+  request({
+    url: 'https://graph.facebook.com/v2.6/me/messages',
+    qs: {access_token:token},
+    method: 'POST',
+    json: {
+      recipient: {id:sender},
+      message: messageData,
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log('Error sending message: ', error);
+    } else if (response.body.error) {
+      console.log('Error: ', response.body.error);
+    }
+  });
+}
+
 function hungry(sender)
 {
-
-    console.log("reached function")
-
     var delivery = {
       pickup_address: "972 Gayley Ave, Los Angeles, CA",
       dropoff_address: "407 Charles E Young Dr W, Los Angeles, CA"
@@ -524,6 +562,9 @@ function hungry(sender)
     var price = (Number(res.body.fee)/100)
     sendTextMessage(sender, "Delivery fee for a Postmates order to you comes out to be: " + "$" + price.toFixed(2));
     });
+
+    sendPostmatesMessage(sender);
+
 }
 
 
