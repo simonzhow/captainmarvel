@@ -2768,6 +2768,7 @@
 			border-radius: 100%;
 			margin: 0 3em 0 0;
 			display: block;
+			-webkit-transform: rotate(90deg);
 		}
 
 			.spotlight .image img {
@@ -2799,7 +2800,7 @@
 				text-align: right;
 			}
 
-	@media screen and (max-width: 736px) and (orientation: landscape) {
+	@media screen and (max-width: 736px) and (orientation: portrait) {
 
 		.spotlight .image {
 			margin: 0 2em 0 0;
