@@ -335,6 +335,12 @@ function searchForEvent(search, sender) {
                     wikiLinkUrl = object.url
                 }
             }
+            console.log(title)
+            console.log(id)
+            console.log(description)
+            console.log(thumbnail)
+            console.log(detailsUrl)
+            console.log(wikiLinkUrl)
             titles.push(title)
             ids.push(id)
             descriptions.push(description)
@@ -342,12 +348,6 @@ function searchForEvent(search, sender) {
             detailsUrls.push(detailsUrl)
             wikiLinkUrls.push(comicLinkUrl)
         }
-        console.log(titles)
-        console.log(ids)
-        console.log(descriptions)
-        console.log(thumbnails)
-        console.log(detailsUrls)
-        console.log(wikiLinkUrls)
         sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, wikiLinkUrls, ids)
     })
 }
