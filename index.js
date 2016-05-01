@@ -67,7 +67,10 @@ function handleWitData(error, data) {
     } 
     console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
     var entities = data.outcomes[0].entities;
-    if (!_.has(entities, 'intent') || !_.has(entities, 'object')) {
+    if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
+        var funcToRun = searchForGeneric
+    }
+    if (!_.has(entities, 'object')) {
         unableToParse();
         return;
     }
@@ -84,7 +87,6 @@ function handleWitData(error, data) {
         break;
     case "search_generic":
         var funcToRun = searchForGeneric
-        var searchTerm = entities.generic[0].value
         break;
     default:
     }
