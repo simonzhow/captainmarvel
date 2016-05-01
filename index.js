@@ -47,18 +47,23 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-            if (text.toLowerCase().startsWith("search")) {
+            if (text.toLowerCase().startsWith("character")) {
             	searchForCharacter(text.substring(6).trim(), sender)
+            }
+            if (text.toLowerCase().startsWith("comic")) {
+                searchForComic(text.substring(6).trim(), sender)
             }
 
         }
     }
+    if(event.postback) {
+        text = JSON.stringify(event.postback);
+        console.log(text)
+        // searchForComic()
+    }
     res.sendStatus(200)
 })
-
-function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls) {
-	var elements = []
-	var numCards = names.length
+ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids) {var elements = [] var numCards = names.length
 	for (i = 0; i < numCards; i++) {
 		var card = {
 			"title": names[i],
@@ -70,8 +75,8 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls
 				"title": "More Information"
 			},
             {
-                "type": "web_url",
-                "url": comicLinkUrls[i],
+                "type": "postback",
+                "payload": ids[0] //searchForComic(ids, ""),
                 "title": "Related Comics"
             }]
 		}
@@ -103,11 +108,50 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls
   });
 }
 
+function searchForComic(search, sender) {
+    marvel.characters.findNameStartsWith(search).then(function(res) {
+        var data = res.data
+        var count = res.meta.count
+        var names = []
+        var descriptions = []
+        var thumbnails = []
+        var detailsUrls = []
+        var comicLinkUrls = []
+        count = Math.min(10, res.meta.count) //Can only show a max of 10 items
+        for(i = 0; i < count; i++) {
+            var item = data[i]
+            var name = item.name
+            var description = item.description
+            var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
+            var urls = item.urls
+            var detailsUrl = null
+            var comicLinkUrl = null
+            for (j = 0; j < urls.length; j++) {
+                var object = urls[j]
+                if (object.type == "detail") {
+                    detailsUrl = object.url
+                    console.log(detailsUrl)
+                } else if (object.type == "comiclink") {
+                    comicLinkUrl = object.url
+                }
+            }
+            names.push(name)
+            descriptions.push(description)
+            thumbnails.push(thumbnailUrl)
+            detailsUrls.push(detailsUrl)
+            comicLinkUrls.push(comicLinkUrl)
+        }
+        sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls)
+    })
+    
+}
+
 function searchForCharacter(search, sender) {
 	marvel.characters.findNameStartsWith(search).then(function(res) {
 		var data = res.data
 		var count = res.meta.count
 		var names = []
+        var ids = []
 		var descriptions = []
 		var thumbnails = []
 		var detailsUrls = []
@@ -115,6 +159,7 @@ function searchForCharacter(search, sender) {
 		count = Math.min(10, res.meta.count) //Can only show a max of 10 items
 		for(i = 0; i < count; i++) {
 			var item = data[i]
+            var id = item.id
 			var name = item.name
 			var description = item.description
 			var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
@@ -127,16 +172,18 @@ function searchForCharacter(search, sender) {
 					detailsUrl = object.url
                     console.log(detailsUrl)
 				} else if (object.type == "comiclink") {
-					comicLinkUrl = object.url
+                    comicLinkUrl = object.url
+                    console.log(comicLinkUrl)
 				}
 			}
+            ids.push(id)
 			names.push(name)
 			descriptions.push(description)
 			thumbnails.push(thumbnailUrl)
 			detailsUrls.push(detailsUrl)
 			comicLinkUrls.push(comicLinkUrl)
 		}
-		sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls)
+		sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids)
 	})
     
 }
