@@ -427,7 +427,7 @@ function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUr
 function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, ids) {
     console.log("entered event message")
     var elements = [] 
-    var numCards = names.length
+    var numCards = titles.length
     if (numCards == 0) {
         sendTextMessage(sender, "No results found")
         return;
