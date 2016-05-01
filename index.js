@@ -99,6 +99,7 @@ function handleWitData(error, data) {
             break;
         case "search_comics_for_character":
             var funcToRun = getComicsForCharacter
+            break;
         case "help":
             var helpText = "Type in a question about the Marvel Universe to get started!\nFor example, you can try asking \"Who is Iron Man?\""
             sendTextMessage(globalSender, helpText)
