@@ -75,7 +75,12 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls
 				"type": "web_url",
 				"url": detailsUrls[i],
 				"title": "More Information"
-			}]
+			},
+            {
+                "type": "postback",
+                "payload": ids[i].toString(),
+                "title": "Related Comics"
+            }]
 		}
 		elements.push(card)
 	}
