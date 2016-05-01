@@ -50,12 +50,13 @@ app.post('/webhook/', function (req, res) {
             if (text.toLowerCase().startsWith("search")) {
             	searchForCharacter(text.substring(6).trim(), sender)
             }
+
         }
     }
     res.sendStatus(200)
 })
 
-function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrl, comicLinkUrls) {
+function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls) {
 	var elements = []
 	var numCards = names.length
 	for (i = 0; i < numCards; i++) {
@@ -65,7 +66,7 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrl,
 			"image_url": thumbnails[i],
 			"buttons": [{
 				"type": "web_url",
-				"url": detailsUrl[i],
+				"url": detailsUrls[i],
 				"title": "More Information"
 			}]
 		}
@@ -119,6 +120,7 @@ function searchForCharacter(search, sender) {
 				var object = urls[j]
 				if (object.type == "detail") {
 					detailsUrl = object.url
+                    console.log(detailsUrl)
 				} else if (object.type == "comiclink") {
 					comicLinkUrl = object.url
 				}
@@ -127,9 +129,9 @@ function searchForCharacter(search, sender) {
 			descriptions.push(description)
 			thumbnails.push(thumbnailUrl)
 			detailsUrls.push(detailsUrl)
-			comicLinkUrls.push(comicLinkUrls)
+			comicLinkUrls.push(comicLinkUrl)
 		}
-		sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrl, comicLinkUrls)
+		sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls)
 	})
     
 }
