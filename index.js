@@ -319,28 +319,19 @@ function searchForEvent(search, sender) {
         var wikiLinkUrls = []
         count = Math.min(10, res.meta.count) //Can only show a max of 10 items
         for(i = 0; i < count; i++) {
-            console.log("1")
             var item = data[i]
             var title = item.title
             var id = item.id
             var description = item.description
-            console.log("2")
             var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
-            console.log("3")
             var urls = item.urls
-            console.log("4")
             var detailsUrl = null
-            console.log("5")
             var wikiLinkUrl = null
-            console.log("6")
             for (j = 0; j < urls.length; j++) {
                 var object = urls[j]
-                console.log("7")
                 if (object.type == "detail") {
-                    console.log("8")
                     detailsUrl = object.url
                 } else if (object.type == "wiki") {
-                    console.log("9")
                     wikiLinkUrl = object.url
                 }
             }
@@ -355,7 +346,7 @@ function searchForEvent(search, sender) {
             descriptions.push(description)
             thumbnails.push(thumbnailUrl)
             detailsUrls.push(detailsUrl)
-            wikiLinkUrls.push(comicLinkUrl)
+            wikiLinkUrls.push(wikiLinkUrl)
         }
         sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, wikiLinkUrls, ids)
     })
