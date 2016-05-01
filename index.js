@@ -322,6 +322,7 @@ function searchForComic(search, sender, id) {
         console.log("entered searchForComic properly")
     }
     else {
+        console.log(search)
         id = getCharacterId(search);
         console.log(id)
         console.log("should be the id of the character")
