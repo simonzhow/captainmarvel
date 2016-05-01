@@ -118,7 +118,7 @@ app.post('/webhook/', function (req, res) {
         console.log(text)
         var numb = text.match(/\d/g);
         numb = numb.join("");
-        var payload = text.substring(12, text.indexOf(":"))
+        var payload = text.substring(0, text.indexOf(":"))
         console.log(payload)
         if (payload == "comics_for_character_id") {
             searchForComic("", sender, numb)
