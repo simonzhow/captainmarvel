@@ -86,6 +86,7 @@ app.post('/webhook/', function (req, res) {
                 }
                 if (!_.has(entities, 'object')) {
                     unableToParse();
+                    sendTextMessage(sender, "No results found")
                     return;
                 }
                 var searchTerm = entities.object[0].value
