@@ -169,6 +169,7 @@ function extractComicInfo(res) {
         detailsUrls.push(detailsUrl)
         purchaseUrls.push(purachaseUrl)
         readerUrls.push(readerUrl)
+        console.log(title)
     }
     sendComicMessage(sender, titles, descriptions, thumbnails, detailsUrls, purchaseUrls, readerUrls)
 }
