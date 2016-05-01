@@ -84,7 +84,6 @@ function handleWitData(error, data) {
         var searchTerm = entities.generic[0].value
         break;
     default:
-        
     }
     funcToRun(searchTerm, globalSender);
 }
@@ -152,7 +151,6 @@ function searchForCharacter(search, sender) {
 
 function extractComicInfo(res) {
     console.log("entered extract ComicInfo")
-    console.log(JSON.stringify(res))
     var data = res.data
     var count = res.meta.count
     var titles = []
