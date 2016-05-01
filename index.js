@@ -304,7 +304,6 @@ function searchComicsByEvent(id, sender) {
 
 function searchForEvent(search, sender) {
     marvel.events.findNameStartsWith(search).then(function(res) {
-        console.log(res)
         var data = res.data
         var count = res.meta.count
         var titles = []
@@ -338,6 +337,12 @@ function searchForEvent(search, sender) {
             detailsUrls.push(detailsUrl)
             wikiLinkUrls.push(comicLinkUrl)
         }
+        console.log(titles)
+        console.log(ids)
+        console.log(descriptions)
+        console.log(thumbnails)
+        console.log(detailsUrls)
+        console.log(wikiLinkUrls)
         sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, wikiLinkUrls, ids)
     })
 }
