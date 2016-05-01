@@ -301,15 +301,14 @@ function searchForComic(search, sender, id) {
         marvel.characters.comics(id).then(extractComicInfo) 
 
     }
-    else if(id == 0){
+    else {
         marvel.comics.findNameStartsWith(search).then(extractComicInfo)
-        // marvel.comics.
     }
     console.log("exited searchForComic")
 }
 
 function searchComicsByEvent(id, sender) {
-    marvel.event.characters(id).then(extractComicInfo)
+    marvel.event.comics(id).then(extractComicInfo)
 }
 
 function searchForEvent(search, sender) {
