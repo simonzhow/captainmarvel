@@ -253,7 +253,7 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
         return;
     }
     for (i = 0; i < numCards; i++) {
-        var buttons: [{
+        var buttons =  [{
             "type": "web_url",
             "url": detailsUrls[i],
             "title": "More Information"
