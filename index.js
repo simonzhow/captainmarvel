@@ -106,6 +106,9 @@ app.post('/webhook/', function (req, res) {
                     case "search_comics_for_character":
                         var funcToRun = getComicsForCharacter
                         break;
+                    case "search_events_for_character":
+                        var funcToRun = searchEventsForCharacter
+                        break;
                     case "help":
                         var helpText = "Type in a question about the Marvel Universe to get started!\nFor example, you can try asking \"Who is Iron Man?\""
                         sendTextMessage(sender, helpText)
