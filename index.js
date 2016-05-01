@@ -16,6 +16,7 @@ var marvel = api.createClient({
 });
 var Postmates = require('postmates');
 var postmates = new Postmates('cus_KOQ26V1V9K3Zkk', 'ef65a92b-aec4-4147-94b2-8e106ca7c39f');
+const ERROR_STRING = "Results not found. Type \"help\" for assistance."
 
 const actions = {
 	say(sessionId, context, message, cb) {
@@ -86,7 +87,7 @@ app.post('/webhook/', function (req, res) {
                 }
                 if (!_.has(entities, 'object')) {
                     unableToParse();
-                    sendTextMessage(sender, "No results found")
+                    sendTextMessage(sender, ERROR_STRING)
                     return;
                 }
                 var searchTerm = entities.object[0].value
@@ -149,6 +150,7 @@ function searchEventsForCharacter(query, sender) {
     marvel.characters.findNameStartsWith(query).then(function(res) {
         var count = res.meta.count
         if (count == 0) {
+            sendTextMessage(sender, "Results not found. Type \"help\" for assistance.")
             return "-1"
         }
         marvel.characters.events(res.data[0].id).then(function(res) {
@@ -196,6 +198,7 @@ function getComicsForCharacter(query, sender) {
     marvel.characters.findNameStartsWith(query).then(function(res) {
         var count = res.meta.count
         if (count == 0) {
+            sendTextMessage(sender, ERROR_STRING)
             return "-1"
         }
         searchForComic("", sender, res.data[0].id)
@@ -286,7 +289,7 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
     var elements = [] 
     var numCards = names.length
     if (numCards == 0) {
-        sendTextMessage(sender, "No results found")
+        sendTextMessage(sender, ERROR_STRING)
         return;
     }
     for (i = 0; i < numCards; i++) {
@@ -411,7 +414,7 @@ function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUr
     var elements = [] 
     var numCards = names.length
     if (numCards == 0) {
-        sendTextMessage(sender, "No results found")
+        sendTextMessage(sender, ERROR_STRING)
         return;
     }
     for (i = 0; i < numCards; i++) {
@@ -462,7 +465,7 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls,
     var elements = [] 
     var numCards = titles.length
     if (numCards == 0) {
-        sendTextMessage(sender, "No results found")
+        sendTextMessage(sender, ERROR_STRING)
         return;
     }
     for (i = 0; i < numCards; i++) {
