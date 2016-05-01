@@ -68,6 +68,10 @@ function handleWitData(error, data) {
     console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
     var entities = data.outcomes[0].entities;
     var skipEntities = false;
+    if (_.has(entities, 'intent') && entities.intent[0].value === "hungry") {
+        hungry();
+        return;
+    }
     if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
         var funcToRun = searchForGeneric
         skipEntities = true; 
