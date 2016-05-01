@@ -70,7 +70,7 @@ app.post('/webhook/', function (req, res) {
 			console.log("before wit call");
 			client.message(text, context, function (error, data) {
 				if (error) {
-					// Wit was unsuccessful
+                    console.log("error");
 				} else {
 					console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
 				}
