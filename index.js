@@ -68,7 +68,12 @@ function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls
 				"type": "web_url",
 				"url": detailsUrls[i],
 				"title": "More Information"
-			}]
+			},
+            {
+                "type": "web_url",
+                "url": comicLinkUrls[i],
+                "title": "Related Comics"
+            }]
 		}
 		elements.push(card)
 	}
