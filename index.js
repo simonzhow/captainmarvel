@@ -83,7 +83,7 @@ function handleWitData(error, data) {
             var funcToRun = searchForComic
             break;
         case "search_character":
-            var funcToRun = searchForCharacter
+            var funcToRun = searchForCharacterByQuery
             break;
         case "search_event":
             var funcToRun = searchForEvent
@@ -92,6 +92,7 @@ function handleWitData(error, data) {
             var funcToRun = searchForGeneric
             break;
         default:
+            break;
         }
     }
     funcToRun(searchTerm, globalSender);
@@ -113,49 +114,81 @@ app.post('/webhook/', function (req, res) {
         console.log(text)
         var numb = text.match(/\d/g);
         numb = numb.join("");
-        searchForComic("", sender, numb)
+        var payload = text.substring(0, text.indexOf(":"))
+        if (payload == "comics_for_character_id") {
+            searchForComic("", sender, numb)
+        } else if (payload == "comics_for_event_id") {
+            searchComicsByEvent(number, sender)
+        } else if (payload == "characters_for_event_id") {
+            searchForCharacterByEvent(numb, sender)
+        }
+        
     }
     res.sendStatus(200)
 })
 
-function searchForCharacter(search, sender) {
-    marvel.characters.findNameStartsWith(search).then(function(res) {
-        var data = res.data
+function searchForCharacterByQuery(search, sender) {
+    marvel.characters.findNameStartsWith(search).then(extractCharacterInfo)
+}
+
+function searchForCharacterByEvent(id, sender) {
+    marvel.events.characters(id).then(extractCharacterInfo)
+}
+
+function getCharacterId(query) {
+    marvel.characters.findNameStartsWith(query).then(function(res) {
         var count = res.meta.count
-        var names = []
-        var ids = []
-        var descriptions = []
-        var thumbnails = []
-        var detailsUrls = []
-        var comicLinkUrls = []
-        count = Math.min(10, res.meta.count) //Can only show a max of 10 items
-        for(i = 0; i < count; i++) {
-            var item = data[i]
-            var id = item.id
-            var name = item.name
-            var description = item.description
-            var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
-            var urls = item.urls
-            var detailsUrl = null
-            var comicLinkUrl = null
-            for (j = 0; j < urls.length; j++) {
-                var object = urls[j]
-                if (object.type == "detail") {
-                    detailsUrl = object.url
-                } else if (object.type == "comiclink") {
-                    comicLinkUrl = object.url
-                }
-            }
-            ids.push(id)
-            names.push(name)
-            descriptions.push(description)
-            thumbnails.push(thumbnailUrl)
-            detailsUrls.push(detailsUrl)
-            comicLinkUrls.push(comicLinkUrl)
+        if (count == 0) {
+            return "-1"
         }
-        sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids)
+        return res.data[0].id
     })
-    
+}
+
+function getComicsForCharacter(query) {
+    var id = getCharacterId(query)
+    if (id == "-1") {
+        sendTextMessage("No character found")
+        return
+    }
+    marvel.characters.comics(id).then(extractComicInfo)
+}
+
+function extractCharacterInfo(res) {
+    var data = res.data
+    var count = res.meta.count
+    var names = []
+    var ids = []
+    var descriptions = []
+    var thumbnails = []
+    var detailsUrls = []
+    var comicLinkUrls = []
+    count = Math.min(10, res.meta.count) //Can only show a max of 10 items
+    for(i = 0; i < count; i++) {
+        var item = data[i]
+        var id = item.id
+        var name = item.name
+        var description = item.description
+        var thumbnailUrl = item.thumbnail.path + "." + item.thumbnail.extension
+        var urls = item.urls
+        var detailsUrl = null
+        var comicLinkUrl = null
+        for (j = 0; j < urls.length; j++) {
+            var object = urls[j]
+            if (object.type == "detail") {
+                detailsUrl = object.url
+            } else if (object.type == "comiclink") {
+                comicLinkUrl = object.url
+            }
+        }
+        ids.push(id)
+        names.push(name)
+        descriptions.push(description)
+        thumbnails.push(thumbnailUrl)
+        detailsUrls.push(detailsUrl)
+        comicLinkUrls.push(comicLinkUrl)
+    }
+    sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids)
 }
 
 function extractComicInfo(res) {
@@ -270,8 +303,13 @@ function searchForComic(search, sender, id) {
     console.log("exited searchForComic")
 }
 
+function searchComicsByEvent(id, sender) {
+    marvel.event.characters(id).then(extractComicInfo)
+}
+
 function searchForEvent(search, sender) {
     marvel.events.findNameStartsWith(search).then(function(res) {
+        console.log(res)
         var data = res.data
         var count = res.meta.count
         var titles = []
@@ -310,7 +348,7 @@ function searchForEvent(search, sender) {
 }
 
 function searchForGeneric(search, sender) {
-
+    searchForCharacterByQuery(search, sender)
 }
 
 
