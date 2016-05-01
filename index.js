@@ -322,7 +322,8 @@ function searchForComic(search, sender, id) {
         marvel.characters.comics(id).then(extractComicInfo) 
 
     }
-    else {
+    else if(search != ""){
+        console.log("entered if statement correctly from searching comic directly")
         marvel.comics.findNameStartsWith(search).then(extractComicInfo)
     }
     console.log("exited searchForComic")
