@@ -253,27 +253,36 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
         return;
     }
     for (i = 0; i < numCards; i++) {
+        var buttons =  []
+        if(detailsUrls[i] != null) {
+            var detailsButton = {
+                "type": "web_url",
+                "url": detailsUrls[i],
+                "title": "More Information"
+            }
+            buttons.push(detailsButton)
+        }
+        if(purchaseUrls[i] != null) { 
+            var purchaseButton = {
+                "type": "web_url",
+                "url": purchaseUrls[i],
+                "title": "Buy Here"
+            }
+            buttons.push(purchaseButton)
+        }
+        if(readerUrls[i] != null) {
+            var urlButton = {
+                "type": "web_url",
+                "url": readerUrls[i],
+                "title": "Read Online Comic"
+            }
+            buttons.push(urlButton)
+        }
         var card = {
             "title": names[i],
             "subtitle": descriptions[i],
             "image_url": thumbnails[i],
-            "buttons": [{
-                "type": "web_url",
-                "url": detailsUrls[i],
-                "title": "More Information"
-            },{ 
-                "type": "web_url",
-                "url": purchaseUrls[i],
-                "title": "Buy Here"
-            }]
-            if(readerUrls[i] != "") {
-                var urlButton = {
-                    "type": "web_url",
-                    "url": readerUrls[i],
-                    "title": "Read Online Comic"
-                }
-                buttons.push(urlButton)
-            }
+            "buttons": buttons
         }
         elements.push(card)
     }
