@@ -253,14 +253,22 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
         return;
     }
     for (i = 0; i < numCards; i++) {
-        var buttons =  [{
-            "type": "web_url",
-            "url": detailsUrls[i],
-            "title": "More Information"
-        },{ 
-            "type": "web_url",
-            "url": purchaseUrls[i],
-            "title": "Buy Here"
+        var buttons =  []
+        if(detailsUrls[i] != "") {
+            var detailsButton = {
+                "type": "web_url",
+                "url": detailsUrls[i],
+                "title": "More Information"
+            }
+            buttons.push(detailsButton)
+        }
+        if(purchaseUrls[i] != "") { 
+            var purchaseButton = {
+                "type": "web_url",
+                "url": purchaseUrls[i],
+                "title": "Buy Here"
+            }
+            buttons.push(purchaseButton)
         }]
         if(readerUrls[i] != "") {
             var urlButton = {
