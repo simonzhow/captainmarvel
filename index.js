@@ -136,6 +136,7 @@ function searchForCharacter(search, sender) {
 
 function extractComicInfo(res) {
     console.log("entered extract ComicInfo")
+    console.log(JSON.stringify(res))
     var data = res.data
     var count = res.meta.count
     var titles = []
