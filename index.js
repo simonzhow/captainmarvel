@@ -67,28 +67,33 @@ function handleWitData(error, data) {
     } 
     console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
     var entities = data.outcomes[0].entities;
+    var skipEntities = false;
     if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
         var funcToRun = searchForGeneric
+        skipEntities = true; 
     }
     if (!_.has(entities, 'object')) {
         unableToParse();
         return;
     }
     var searchTerm = entities.object[0].value
-    switch(entities.intent[0].value) {
-    case "search_comic":
-        var funcToRun = searchForComic
-        break;
-    case "search_character":
-        var funcToRun = searchForCharacterByQuery
-        break;
-    case "search_event":
-        var funcToRun = searchForEvent
-        break;
-    case "search_generic":
-        var funcToRun = searchForGeneric
-        break;
-    default:
+    if (!skipEntities) {
+        switch(entities.intent[0].value) {
+        case "search_comic":
+            var funcToRun = searchForComic
+            break;
+        case "search_character":
+            var funcToRun = searchForCharacterByQuery
+            break;
+        case "search_event":
+            var funcToRun = searchForEvent
+            break;
+        case "search_generic":
+            var funcToRun = searchForGeneric
+            break;
+        default:
+            break;
+        }
     }
     funcToRun(searchTerm, globalSender);
 }
