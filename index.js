@@ -57,6 +57,38 @@ app.listen(app.get('port'), function() {
     console.log('running on port', app.get('port'))
 })
 
+var globalSender;
+
+function handleWitData(error, data) {
+    if (error) {
+        // Wit could not parse the string
+        return
+    } 
+    console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+    var entities = data.outcomes[0].entities;
+    switch(entities.intent[0].value) {
+    case "search_comic":
+        var funcToRun = searchForComic
+        var searchTerm = entities.comic[0].value
+        break;
+    case "search_character":
+        var funcToRun = searchForCharacter
+        var searchTerm = entities.character[0].value
+        break;
+    case "search_event":
+        var funcToRun = searchForEvent
+        var searchTerm = entities.event[0].value
+        break;
+    case "search_generic":
+        var funcToRun = searchForGeneric
+        var searchTerm = entities.generic[0].value
+        break;
+    default:
+        
+    }
+    funcToRun(searchTerm, globalSender);
+}
+
 app.post('/webhook/', function (req, res) {
     messaging_events = req.body.entry[0].messaging
     for (i = 0; i < messaging_events.length; i++) {
@@ -64,14 +96,8 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-			client.message(text, function (error, data) {
-				if (error) {
-                    console.log("error");
-				} 
-				else {
-					console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
-				}
-			});
+            globalSender = sender;
+			client.message(text, handleWitData);
             if (text.toLowerCase().startsWith("character")) {
                 searchForCharacter(text.substring(10).trim(), sender)
             } else if (text.toLowerCase().startsWith("comic")) {
@@ -286,6 +312,9 @@ function searchForEvent(search, sender) {
     })
 }
 
+function searchForGeneric(search, sender) {
+
+}
 
 
 function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids) {
@@ -417,17 +446,4 @@ function sendTextMessage(sender, text) {
         }
     })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
