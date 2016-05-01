@@ -98,16 +98,6 @@ app.post('/webhook/', function (req, res) {
             text = event.message.text
             globalSender = sender;
 			client.message(text, handleWitData);
-            if (text.toLowerCase().startsWith("character")) {
-                searchForCharacter(text.substring(10).trim(), sender)
-            } else if (text.toLowerCase().startsWith("comic")) {
-                searchForComic(text.substring(5).trim(), sender, 0)
-            } else if (text.toLowerCase().startsWith("event")) {
-                searchForEvent(text.substring(5).trim(), sender)
-            } else if (text.toLowerCase().startsWith("help")) {
-                
-            }
-
         }
     }
     if(event.postback) {
