@@ -88,8 +88,7 @@ function handleWitData(error, data) {
     default:
         
     }
-    console.log(entities.intent[0].value);
-    console.log(JSON.stringify(entities.comic[0].value));
+    funcToRun(searchTerm, globalSender);
 }
 
 app.post('/webhook/', function (req, res) {
