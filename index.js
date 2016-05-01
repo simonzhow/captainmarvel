@@ -155,18 +155,18 @@ function getCharacterId(query) {
         if (count == 0) {
             return "-1"
         }
-        console.log(JSON.stringify(res))
         return res.data[0].id
     })
 }
 
-function getComicsForCharacter(query) {
-    var id = getCharacterId(query)
-    if (id == "-1") {
-        sendTextMessage("No character found")
-        return
-    }
-    marvel.characters.comics(id).then(extractComicInfo)
+function getComicsForCharacter(query, sender) {
+    marvel.characters.findNameStartsWith(query).then(function(res) {
+        var count = res.meta.count
+        if (count == 0) {
+            return "-1"
+        }
+        searchForComic("", sender, res.data[0].id)
+    })
 }
 
 function extractCharacterInfo(res) {
