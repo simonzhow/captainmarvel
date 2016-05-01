@@ -320,14 +320,12 @@ function searchForComic(search, sender, id) {
     if(search == ""){
         console.log(id)
         console.log("entered searchForComic properly")
-        marvel.characters.comics(id).then(extractComicInfo) 
-
     }
-    else if(search != ""){
-        console.log("entered if statement correctly from searching comic directly")
-        marvel.comics.findAll2(20, 0, search).then(extractComicInfo)
+    else {
+        id = getCharacterId(search);
         // marvel.comics.
     }
+    marvel.characters.comics(id).then(extractComicInfo) 
     console.log("exited searchForComic")
 }
 
