@@ -259,11 +259,15 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
                 "type": "web_url",
                 "url": purchaseUrls[i],
                 "title": "Buy Here"
-            }, {
-                "type": "web_url",
-                "url": readerUrls[i],
-                "title": "Read Online Comic"
             }]
+            if(readerUrls[i] != "") {
+                var urlButton = {
+                    "type": "web_url",
+                    "url": readerUrls[i],
+                    "title": "Read Online Comic"
+                }
+                buttons.push(urlButton)
+            }
         }
         elements.push(card)
     }
