@@ -17,16 +17,16 @@ var witToken = "2QN2FH6KBYEISQHLJOA6AAQ7PC3VQPF5"
 var Wit = require('node-wit').Wit;
 
 const actions = {
-    say(sessionId, context, message, cb) {
-        console.log(message);
-        cb();
-    },
-    merge(sessionId, context, entities, message, cb) {
-        cb(context);
-    },
-    error(sessionId, context, error) {
-        console.log(error.message);
-    },  
+	say(sessionId, context, message, cb) {
+		console.log(message);
+		cb();
+	},
+	merge(sessionId, context, entities, message, cb) {
+		cb(context);
+	},
+	error(sessionId, context, error) {
+		console.log(error.message);
+	},	
 }
 
 const client = new Wit(witToken, actions);
@@ -66,14 +66,14 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-            client.message(text, function (error, data) {
-                if (error) {
+			client.message(text, function (error, data) {
+				if (error) {
                     console.log("error");
-                } 
-                else {
-                    console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
-                }
-            });
+				} 
+				else {
+					console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+				}
+			});
             if (text.toLowerCase().startsWith("character")) {
                 searchForCharacter(text.substring(10).trim(), sender)
             } else if (text.toLowerCase().startsWith("comic")) {
