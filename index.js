@@ -429,6 +429,7 @@ function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUr
 }
 
 function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls, ids) {
+    console.log("entered event message")
     var elements = [] 
     var numCards = names.length
     if (numCards == 0) {
@@ -436,8 +437,6 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls,
         return;
     }
     for (i = 0; i < numCards; i++) {
-        if (wikiLinkUrls[i] == null)
-            continue
         var card = {
             "title": titles[i],
             "subtitle": descriptions[i],
