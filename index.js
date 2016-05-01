@@ -56,7 +56,7 @@ app.post('/webhook/', function (req, res) {
             } else if (text.toLowerCase().startsWith("series")) {
                 searchForSeries(text.substring(6).trim(), sender)
             } else if (text.toLowerCase().startsWith("help")) {
-
+                
             }
 
         }
