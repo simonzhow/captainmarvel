@@ -63,7 +63,9 @@ app.post('/webhook/', function (req, res) {
     }
     res.sendStatus(200)
 })
- function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids) {var elements = [] var numCards = names.length
+function sendGenericMessage(sender, names, descriptions, thumbnails, detailsUrls, comicLinkUrls, ids) {
+    var elements = [] 
+    var numCards = names.length
 	for (i = 0; i < numCards; i++) {
 		var card = {
 			"title": names[i],
@@ -76,7 +78,7 @@ app.post('/webhook/', function (req, res) {
 			},
             {
                 "type": "postback",
-                "payload": ids[0] //searchForComic(ids, ""),
+                "payload": ids[i] //searchForComic(ids, ""),
                 "title": "Related Comics"
             }]
 		}
