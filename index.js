@@ -14,6 +14,8 @@ var marvel = api.createClient({
     publicKey: public_key,
     privateKey: private_key
 });
+var Postmates = require('postmates');
+var postmates = new Postmates('cus_KOQ26V1V9K3Zkk', 'ef65a92b-aec4-4147-94b2-8e106ca7c39f');
 
 const actions = {
 	say(sessionId, context, message, cb) {
@@ -95,6 +97,10 @@ function handleWitData(error, data) {
         case "search_generic":
             var funcToRun = searchForGeneric
             break;
+        case "help":
+            var helpText = "Type in a question about the Marvel Universe to get started!\nFor example, you can try asking \"Who is Iron Man?\""
+            sendTextMessage(globalSender, helpText)
+            return;
         default:
             break;
         }
@@ -118,7 +124,7 @@ app.post('/webhook/', function (req, res) {
         console.log(text)
         var numb = text.match(/\d/g);
         numb = numb.join("");
-        var payload = text.substring(12, text.indexOf(":"))
+        var payload = text.substring(12, text.indexOf(":", 11))
         console.log(payload)
         if (payload == "comics_for_character_id") {
             searchForComic("", sender, numb)
@@ -420,6 +426,8 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls,
         return;
     }
     for (i = 0; i < numCards; i++) {
+        if (wikiLinkUrls[i] == null)
+            continue
         var card = {
             "title": titles[i],
             "subtitle": descriptions[i],
