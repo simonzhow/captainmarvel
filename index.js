@@ -155,6 +155,7 @@ function getCharacterId(query) {
         if (count == 0) {
             return "-1"
         }
+        console.log(JSON.stringify(res))
         return res.data[0].id
     })
 }
@@ -323,7 +324,7 @@ function searchForComic(search, sender, id) {
     }
     else {
         console.log(search)
-        id = getCharacterId(search);
+        id = getCharacterId(search)
         console.log(id)
         console.log("should be the id of the character")
         // marvel.comics.
