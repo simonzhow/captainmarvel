@@ -86,7 +86,6 @@ app.post('/webhook/', function (req, res) {
                     skipEntities = true; 
                 }
                 if (!_.has(entities, 'object')) {
-                    unableToParse();
                     sendTextMessage(sender, ERROR_STRING)
                     return;
                 }
