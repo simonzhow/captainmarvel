@@ -15,25 +15,24 @@ var marvelClient = marvel_api.createClient({
 
 var wit_api = require('node-wit').Wit;
 var wit_token = process.env.wit_token
+const actions = {
+    say(sessionId, context, message, cb) {
+        console.log(message);
+        cb();
+    },
+    merge(sessionId, context, entities, message, cb) {
+        cb(context);
+    },
+    error(sessionId, context, error) {
+        console.log(error.message);
+    },  
+}
 var wit_client = new wit_api(wit_token, actions);
 
 var Postmates = require('postmates');
 var postmates = new Postmates('cus_KOQ26V1V9K3Zkk', 'ef65a92b-aec4-4147-94b2-8e106ca7c39f');
 
 const ERROR_STRING = "Results not found. Type \"help\" for assistance."
-
-const actions = {
-	say(sessionId, context, message, cb) {
-		console.log(message);
-		cb();
-	},
-	merge(sessionId, context, entities, message, cb) {
-		cb(context);
-	},
-	error(sessionId, context, error) {
-		console.log(error.message);
-	},	
-}
 
 
 app.set('port', (process.env.PORT || 5000))
