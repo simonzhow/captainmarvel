@@ -29,9 +29,6 @@ const actions = {
 }
 var wit_client = new wit_api(wit_token, actions);
 
-var Postmates = require('postmates');
-var postmates = new Postmates('cus_KOQ26V1V9K3Zkk', 'ef65a92b-aec4-4147-94b2-8e106ca7c39f');
-
 const ERROR_STRING = "Results not found. Type \"help\" for assistance."
 
 
@@ -79,10 +76,6 @@ app.post('/webhook/', function (req, res) {
                 console.log('Yay, got wit_api.ai response: ' + JSON.stringify(data));
                 var entities = data.outcomes[0].entities;
                 var skipEntities = false;
-                if (_.has(entities, 'intent') && entities.intent[0].value === "hungry") {
-                    hungry(sender);
-                    return;
-                }
                 if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
                     var funcToRun = searchForGeneric
                     skipEntities = true; 
@@ -579,36 +572,3 @@ function sendPostmatesMessage(sender) {
     }
   });
 }
-
-function hungry(sender)
-{
-    // var delivery = {
-    //   pickup_address: "972 Gayley Ave, Los Angeles, CA",
-    //   dropoff_address: "407 Charles E Young Dr W, Los Angeles, CA"
-    // };
-
-    // postmates.quote(delivery, function(err, res) {
-    // console.log(res.body.fee);  
-    // var price = (Number(res.body.fee)/100)
-    // sendTextMessage(sender, "Delivery fee for a Postmates order to you comes out to be: " + "$" + price.toFixed(2));
-    // });
-
-    // sendPostmatesMessage(sender);
-
-   	//this function does not run when called
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
