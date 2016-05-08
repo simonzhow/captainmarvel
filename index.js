@@ -13,7 +13,7 @@ var marvelClient = marvel_api.createClient({
     privateKey: marvel_private_key
 });
 
-var wit_api = require('node-wit').wit_api;
+var wit_api = require('node-wit').Wit;
 var wit_token = process.env.wit_token
 var wit_client = new wit_api(wit_token, actions);
 
