@@ -41,7 +41,7 @@ app.use(bodyParser.urlencoded({extended: false}))
 // Process application/json
 app.use(bodyParser.json())
 
-app.use(express.static('frontend'))
+app.use(express.static('website'))
 
 // Index route
 app.get('/', function (req, res) {
