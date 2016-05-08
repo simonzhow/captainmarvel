@@ -301,6 +301,7 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
             }
             buttons.push(detailsButton)
         }
+	/*
         if(purchaseUrls[i] != null) { 
             var purchaseButton = {
                 "type": "web_url",
@@ -309,6 +310,7 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
             }
             buttons.push(purchaseButton)
         }
+	*/
         if(readerUrls[i] != null) {
             var urlButton = {
                 "type": "web_url",
