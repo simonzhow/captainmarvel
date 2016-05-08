@@ -3,19 +3,23 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
 var md5 = require('md5')
-var api = require('marvel-api')
-var Wit = require('node-wit').Wit;
+var marvel_api = require('marvel-api')
 var app = express()
-var token = "EAAYJpbaJfuUBAGrHv5892ANU1ER1ZBzqIpK0xnG5ZBKkdSQqSpNaFRjp8diPAfYLWoYpL3VyakXsOa1aHczQZCJ3BZCuSt8kKzQfUpnADSVhxzuZCBElw1MS4e9t9qk9jS8ZAV4wrZAQUppbsAc7FRcpA4QP1Czz0vdRGvSbGWukAZDZD"
-var public_key = '9aaf771e2b960537d98d91ff2451b2d6'
-var private_key = 'aba10e9f584d245bd51f13a9ce8111d142f27d00'
-var witToken = "2QN2FH6KBYEISQHLJOA6AAQ7PC3VQPF5"
-var marvel = api.createClient({
-    publicKey: public_key,
-    privateKey: private_key
+const facebook_token = process.env.facebook_token
+const marvel_public_key = process.env.marvel_public_key
+const marvel_private_key = process.env.marvel_private_key
+var marvelClient = marvel_api.createClient({
+    publicKey: marvel_public_key,
+    privateKey: marvel_private_key
 });
+
+var wit_api = require('node-wit').wit_api;
+var wit_token = process.env.wit_token
+var wit_client = new wit_api(wit_token, actions);
+
 var Postmates = require('postmates');
 var postmates = new Postmates('cus_KOQ26V1V9K3Zkk', 'ef65a92b-aec4-4147-94b2-8e106ca7c39f');
+
 const ERROR_STRING = "Results not found. Type \"help\" for assistance."
 
 const actions = {
@@ -31,7 +35,6 @@ const actions = {
 	},	
 }
 
-const client = new Wit(witToken, actions);
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -53,7 +56,7 @@ app.get('/webhook/', function (req, res) {
     if (req.query['hub.verify_token'] === 'marvel_la_hacks') {
         res.send(req.query['hub.challenge'])
     }
-    res.send('Error, wrong token')
+    res.send('Error, wrong facebook_token')
 })
 
 // Spin up the server
@@ -69,12 +72,12 @@ app.post('/webhook/', function (req, res) {
         sender = event.sender.id
         if (event.message && event.message.text) {
             text = event.message.text
-			client.message(text, function (error, data) {
+			wit_client.message(text, function (error, data) {
                 if (error) {
-                    // Wit could not parse the string
+                    // wit_api could not parse the string
                     return
                 } 
-                console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+                console.log('Yay, got wit_api.ai response: ' + JSON.stringify(data));
                 var entities = data.outcomes[0].entities;
                 var skipEntities = false;
                 if (_.has(entities, 'intent') && entities.intent[0].value === "hungry") {
@@ -142,17 +145,17 @@ app.post('/webhook/', function (req, res) {
 })
 
 function searchForCharacterByQuery(search, sender) {
-    marvel.characters.findNameStartsWith(search).then(extractCharacterInfo)
+    marvelClient.characters.findNameStartsWith(search).then(extractCharacterInfo)
 }
 
 function searchEventsForCharacter(query, sender) {
-    marvel.characters.findNameStartsWith(query).then(function(res) {
+    marvelClient.characters.findNameStartsWith(query).then(function(res) {
         var count = res.meta.count
         if (count == 0) {
             sendTextMessage(sender, "Results not found. Type \"help\" for assistance.")
             return "-1"
         }
-        marvel.characters.events(res.data[0].id).then(function(res) {
+        marvelClient.characters.events(res.data[0].id).then(function(res) {
             var data = res.data
             var count = res.meta.count
             var titles = []
@@ -188,13 +191,13 @@ function searchEventsForCharacter(query, sender) {
 }
 
 function searchForCharacterByEvent(id, sender) {
-    marvel.events.characters(id).then(extractCharacterInfo)
+    marvelClient.events.characters(id).then(extractCharacterInfo)
 }
 
 
 
 function getComicsForCharacter(query, sender) {
-    marvel.characters.findNameStartsWith(query).then(function(res) {
+    marvelClient.characters.findNameStartsWith(query).then(function(res) {
         var count = res.meta.count
         if (count == 0) {
             sendTextMessage(sender, ERROR_STRING)
@@ -338,7 +341,7 @@ function sendComicMessage(sender, names, descriptions, thumbnails, detailsUrls, 
     };
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
+    qs: {access_token:facebook_token},
     method: 'POST',
     json: {
       recipient: {id:sender},
@@ -361,19 +364,19 @@ function searchForComic(search, sender, id) {
     }
     else {
         getComicsForCharacter(search, sender)
-        // marvel.comics.
+        // marvelClient.comics.
     }
-    marvel.characters.comics(id).then(extractComicInfo) 
+    marvelClient.characters.comics(id).then(extractComicInfo) 
     console.log("exited searchForComic")
 }
 
 function searchComicsByEvent(id, sender) {
-    marvel.events.comics(id).then(extractComicInfo)
+    marvelClient.events.comics(id).then(extractComicInfo)
 }
 
 
 function searchForEvent(search, sender) {
-    marvel.events.findNameStartsWith(search).then(function(res) {
+    marvelClient.events.findNameStartsWith(search).then(function(res) {
         var data = res.data
         var count = res.meta.count
         var titles = []
@@ -446,7 +449,7 @@ function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUr
     };
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
+    qs: {access_token:facebook_token},
     method: 'POST',
     json: {
       recipient: {id:sender},
@@ -501,7 +504,7 @@ function sendEventMessage(sender, titles, descriptions, thumbnails, detailsUrls,
     };
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
+        qs: {access_token:facebook_token},
         method: 'POST',
         json: {
             recipient: {id:sender},
@@ -523,7 +526,7 @@ function sendTextMessage(sender, text) {
     }
     request({
         url: 'https://graph.facebook.com/v2.6/me/messages',
-        qs: {access_token:token},
+        qs: {access_token:facebook_token},
         method: 'POST',
         json: {
             recipient: {id:sender},
@@ -563,7 +566,7 @@ function sendPostmatesMessage(sender) {
 };
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
-    qs: {access_token:token},
+    qs: {access_token:facebook_token},
     method: 'POST',
     json: {
       recipient: {id:sender},
