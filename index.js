@@ -74,7 +74,8 @@ app.post('/webhook/', function (req, res) {
                     return
                 } 
                 console.log('Yay, got wit_api.ai response: ' + JSON.stringify(data));
-                var entities = data.outcomes[0].entities;
+                // var entities = data.outcomes[0].entities;
+                var entities = data.entities.object[0].body;
                 var skipEntities = false;
                 if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
                     var funcToRun = searchForGeneric
