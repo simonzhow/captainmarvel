@@ -75,17 +75,19 @@ app.post('/webhook/', function (req, res) {
                 } 
                 console.log('Yay, got wit_api.ai response: ' + JSON.stringify(data));
                 // var entities = data.outcomes[0].entities;
-                var entities = data.entities.object[0].body;
+                var entities = data.entities;
+		var hasIntent = _.has(entities, 'intent');
+		var hasObject = _.has(entities, 'object');
                 var skipEntities = false;
-                if (!_.has(entities, 'intent') && _.has(entities, 'object')) {
+                if (!hasIntent && hasObject) {
                     var funcToRun = searchForGeneric
                     skipEntities = true; 
                 }
-                if (!_.has(entities, 'object')) {
+                if (!hasObject) {
                     sendTextMessage(sender, ERROR_STRING)
                     return;
                 }
-                var searchTerm = entities.object[0].value
+                var searchTerm = entities.object[0].body
                 if (!skipEntities) {
                     switch(entities.intent[0].value) {
                     case "search_comic":

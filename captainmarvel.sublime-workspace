@@ -1,0 +1,382 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"mar",
+				"marvel_private_key"
+			],
+			[
+				"marv",
+				"marvel_public_key"
+			],
+			[
+				"face",
+				"facebook_token"
+			],
+			[
+				"val",
+				"ValueType"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "cookie = 0x64d772b3\n$rsp start 0x55623f68\ntouch2 address 0x401848",
+			"settings":
+			{
+				"buffer_size": 65,
+				"line_ending": "Windows",
+				"name": "cookie = 0x64d772b3"
+			}
+		},
+		{
+			"file": "/D/Data/Jai/Downloads/nodejs-v1/app.js",
+			"settings":
+			{
+				"buffer_size": 1149,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.js",
+			"settings":
+			{
+				"buffer_size": 17063,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 242.0,
+		"selected_items":
+		[
+			[
+				":w",
+				":w - Save"
+			],
+			[
+				":inst",
+				"Package Control: Install Package"
+			],
+			[
+				":packa",
+				"Package Control: Remove Package"
+			],
+			[
+				":install",
+				"Package Control: Install Package"
+			],
+			[
+				":install p",
+				"Package Control: Install Package"
+			],
+			[
+				":remove",
+				"Package Control: Remove Package"
+			],
+			[
+				":b",
+				":0 - BOF"
+			],
+			[
+				":install pa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Jai/captainmarvel/index.js",
+		"/C/Users/Jai/captainmarvel/captainmarvel.sublime-project",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Spring/CS 33/Homework/1.txt",
+		"/C/Users/Jai/Drive/UCLA/1st Year/Spring/CS 33/Homework/1.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project4/malicious.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project4/results.txt",
+		"/D/Data/Jai/Downloads/results.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project4/maliciousFiles.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project4/indicators.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project4/tels.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project4/Debug/results.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project4/Debug/initialTelemet.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/homework4/hw.txt",
+		"/C/HaxLogs.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project3/report.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 35L/ass8/srt/make-log.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 35L/ass5/lab5.diff",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 35L/ass5/sfrob.c",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/homework3/tree.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/homework3/maze.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/homework3/linear.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/homework3/landmark.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/homework2/mazestack.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/homework2/mazequeue.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/homework2/hw.txt",
+		"/D/Data/Jai/Documents/temp.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project2/LinkedListMap/report.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project2/LinkedListMap/testMap.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project2/LinkedListMap/Map.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/project2/LinkedListMap/Map.h",
+		"/D/Data/Jai/Downloads/Archive/Project1/main.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Winter/CS 32/homework1/Maps/Map.h",
+		"/D/Data/Jai/Downloads/escape.java",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/projects/project7/robots.cpp",
+		"/C/Program Files/osu!/osu!.cfg",
+		"/C/Users/Jai/AppData/Local/Temp/tmpFC87.tmp.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/projects/project5/report.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/projects/project5/rocks.cpp",
+		"/D/Data/Jai/Downloads/cyberboard/README.TXT",
+		"/D/Data/Jai/Downloads/DriftingDroids_1.3.5/DriftingDroids_1.3.5/README.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/projects/project4/report.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/projects/project4/array.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/Projects/Project1/Project1.zip",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/Projects/Project1/compile_error.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/Projects/Project1/report.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/Projects/Project1/logic_error.cpp",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/Projects/Project1/original.cpp",
+		"/C/Users/Jai/AppData/Roaming/Sublime Text 2/Packages/User/Terminal.sublime-settings",
+		"/C/Users/Jai/AppData/Roaming/Sublime Text 2/Packages/Terminal/Terminal.sublime-settings",
+		"/C/Users/Jai/AppData/Roaming/Sublime Text 2/Packages/User/Terminal (Windows).sublime-settings",
+		"/C/Users/Jai/AppData/Roaming/Sublime Text 2/Packages/Glue/keymaps/Default (Windows).sublime-keymap",
+		"/C/Users/Jai/AppData/Roaming/Sublime Text 2/Packages/Glue/messages/help.txt",
+		"/D/Data/Jai/OneDrive/UCLA/1st Year/Fall/CS 31/Project 1/original.cpp",
+		"/C/Users/Jai/AppData/Roaming/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/C/Users/Jai/AppData/Roaming/Sublime Text 2/Packages/Default/Default (Windows).sublime-keymap"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"webs",
+			"post",
+			"hungry",
+			"hung",
+			"wit",
+			"postm",
+			"witToken",
+			"token",
+			"private_key",
+			"public_key",
+			"witClient",
+			"witApi",
+			"marvelApi",
+			"client",
+			"Wit",
+			"marvel",
+			"api",
+			"frontend",
+			" *",
+			"rounds",
+			"cerr",
+			"ignore"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"wit_token",
+			"facebook_token",
+			"marvel_private_key",
+			"marvel_public_key",
+			"wit_client",
+			"wit_api",
+			"marvel_api",
+			"witClient",
+			"witApi",
+			"marvelClient",
+			"marvelApi",
+			"* "
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"settings":
+					{
+						"buffer_size": 65,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								65,
+								65
+							]
+						],
+						"settings":
+						{
+							"auto_name": "cookie = 0x64d772b3",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/D/Data/Jai/Downloads/nodejs-v1/app.js",
+					"settings":
+					{
+						"buffer_size": 1149,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "index.js",
+					"settings":
+					{
+						"buffer_size": 17063,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4354,
+								4359
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 45.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": false,
+	"side_bar_width": 220.0,
+	"status_bar_visible": true
+}
