@@ -444,6 +444,7 @@ function sendCharacterMessage(sender, names, descriptions, thumbnails, detailsUr
             }
         }
     };
+    console.log("Message data: " + messageData)
   request({
     url: 'https://graph.facebook.com/v2.6/me/messages',
     qs: {access_token:facebook_token},
