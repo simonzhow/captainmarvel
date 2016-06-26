@@ -87,7 +87,7 @@ app.post('/webhook/', function (req, res) {
                     sendTextMessage(sender, ERROR_STRING)
                     return;
                 }
-                var searchTerm = entities.object[0].body
+                var searchTerm = entities.object[0].value
                 if (!skipEntities) {
                     switch(entities.intent[0].value) {
                     case "search_comic":
