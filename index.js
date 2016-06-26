@@ -76,8 +76,8 @@ app.post('/webhook/', function (req, res) {
                 console.log('Yay, got wit_api.ai response: ' + JSON.stringify(data));
                 // var entities = data.outcomes[0].entities;
                 var entities = data.entities;
-		var hasIntent = _.has(entities, 'intent');
-		var hasObject = _.has(entities, 'object');
+				var hasIntent = _.has(entities, 'intent');
+				var hasObject = _.has(entities, 'object');
                 var skipEntities = false;
                 if (!hasIntent && hasObject) {
                     var funcToRun = searchForGeneric
@@ -113,7 +113,8 @@ app.post('/webhook/', function (req, res) {
                         sendTextMessage(sender, helpText)
                         return;
                     default:
-                        break;
+                    	sendTextMessage(sender, ERROR_STRING)
+                    	return;
                     }
                 }
                 funcToRun(searchTerm, sender);
@@ -140,6 +141,7 @@ app.post('/webhook/', function (req, res) {
 })
 
 function searchForCharacterByQuery(search, sender) {
+	console.log("Searching for character: " + search)
     marvelClient.characters.findNameStartsWith(search).then(extractCharacterInfo)
 }
 
