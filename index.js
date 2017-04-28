@@ -142,7 +142,7 @@ app.post('/webhook/', function (req, res) {
 
 function searchForCharacterByQuery(search, sender) {
 	console.log("Searching for character: " + search)
-    marvelClient.characters.findNameStartsWith(search).then(extractCharacterInfo).fail(console.log)
+    marvelClient.characters.findNameStartsWith(search).then(extractCharacterInfo).fail(console.error).done()
 }
 
 function searchEventsForCharacter(query, sender) {
